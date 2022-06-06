@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="4d5e8c7124ac46e482229bb1be0227c2" Name="Diagram1" ZoomLevel="34">
+        <EntityTypeShape EntityType="tnut_socialModel.account" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="tnut_socialModel.anh" Width="1.5" PointX="17.25" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="tnut_socialModel.category" Width="1.5" PointX="12.75" PointY="2.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="tnut_socialModel.comment" Width="1.5" PointX="9.75" PointY="8.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="tnut_socialModel.chat" Width="1.5" PointX="9.75" PointY="12.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="tnut_socialModel.group" Width="1.5" PointX="10.5" PointY="1.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="tnut_socialModel.khoa" Width="1.5" PointX="0.75" PointY="8.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="tnut_socialModel.like" Width="1.5" PointX="12.75" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="tnut_socialModel.lop" Width="1.5" PointX="5.25" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="tnut_socialModel.mon_hoc" Width="1.5" PointX="7.5" PointY="4.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="tnut_socialModel.nganh" Width="1.5" PointX="3" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="tnut_socialModel.post" Width="1.5" PointX="15" PointY="5" IsExpanded="true" />
+        <EntityTypeShape EntityType="tnut_socialModel.role" Width="1.5" PointX="10.5" PointY="16.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="tnut_socialModel.sysdiagrams" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="tnut_socialModel.tai_lieu" Width="1.5" PointX="9.75" PointY="4.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="tnut_socialModel.user" Width="1.5" PointX="7.5" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="tnut_socialModel.user_group" Width="1.5" PointX="12.75" PointY="5.5" IsExpanded="true" />
+        <AssociationConnector Association="tnut_socialModel.FK_anh_post" ManuallyRouted="false" />
+        <AssociationConnector Association="tnut_socialModel.FK_post_category" ManuallyRouted="false" />
+        <AssociationConnector Association="tnut_socialModel.FK_comment_comment" ManuallyRouted="false" />
+        <AssociationConnector Association="tnut_socialModel.FK_comment_post" ManuallyRouted="false" />
+        <AssociationConnector Association="tnut_socialModel.FK_comment_user" ManuallyRouted="false" />
+        <AssociationConnector Association="tnut_socialModel.FK_chat_user1" ManuallyRouted="false" />
+        <AssociationConnector Association="tnut_socialModel.FK_user_group_group1" ManuallyRouted="false" />
+        <AssociationConnector Association="tnut_socialModel.FK_nganh_khoa" ManuallyRouted="false" />
+        <AssociationConnector Association="tnut_socialModel.FK_like_post" ManuallyRouted="false" />
+        <AssociationConnector Association="tnut_socialModel.FK_like_user" ManuallyRouted="false" />
+        <AssociationConnector Association="tnut_socialModel.FK_lop_nganh" ManuallyRouted="false" />
+        <AssociationConnector Association="tnut_socialModel.FK_user_lop" ManuallyRouted="false" />
+        <AssociationConnector Association="tnut_socialModel.FK_tai_lieu_mon_hoc" ManuallyRouted="false" />
+        <AssociationConnector Association="tnut_socialModel.FK_post_user_group" ManuallyRouted="false" />
+        <AssociationConnector Association="tnut_socialModel.FK_user_group_role" ManuallyRouted="false" />
+        <AssociationConnector Association="tnut_socialModel.FK_tai_lieu_user" ManuallyRouted="false" />
+        <AssociationConnector Association="tnut_socialModel.FK_user_group_user1" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

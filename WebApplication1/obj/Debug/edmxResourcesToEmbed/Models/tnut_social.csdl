@@ -1,0 +1,526 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="tnut_socialModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="account">
+    <Key>
+      <PropertyRef Name="username" />
+    </Key>
+    <Property Name="username" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="anh">
+    <Key>
+      <PropertyRef Name="id_image" />
+    </Key>
+    <Property Name="id_image" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="link" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="mo_ta" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="id_post" Type="Int32" />
+    <NavigationProperty Name="post" Relationship="Self.FK_anh_post" FromRole="anh" ToRole="post" />
+  </EntityType>
+  <EntityType Name="category">
+    <Key>
+      <PropertyRef Name="id_category" />
+    </Key>
+    <Property Name="id_category" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="post" Relationship="Self.FK_post_category" FromRole="category" ToRole="post" />
+  </EntityType>
+  <EntityType Name="comment">
+    <Key>
+      <PropertyRef Name="id_comment" />
+    </Key>
+    <Property Name="id_comment" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="uid" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="id_post" Type="Int32" Nullable="false" />
+    <Property Name="time" Type="DateTime" Precision="3" />
+    <Property Name="noi_dung" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="id_parent" Type="Int32" />
+    <NavigationProperty Name="comment1" Relationship="Self.FK_comment_comment" FromRole="comment" ToRole="comment1" />
+    <NavigationProperty Name="comment2" Relationship="Self.FK_comment_comment" FromRole="comment1" ToRole="comment" />
+    <NavigationProperty Name="post" Relationship="Self.FK_comment_post" FromRole="comment" ToRole="post" />
+    <NavigationProperty Name="user" Relationship="Self.FK_comment_user" FromRole="comment" ToRole="user" />
+  </EntityType>
+  <EntityType Name="chat">
+    <Key>
+      <PropertyRef Name="id_chat" />
+    </Key>
+    <Property Name="id_chat" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="noi_dung" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="uid" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="nguoi_nhan" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="time" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="user" Relationship="Self.FK_chat_user1" FromRole="chat" ToRole="user" />
+  </EntityType>
+  <EntityType Name="group">
+    <Key>
+      <PropertyRef Name="ma_nhom" />
+    </Key>
+    <Property Name="ma_nhom" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ten_nhom" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="mo_ta" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="user_group" Relationship="Self.FK_user_group_group1" FromRole="group" ToRole="user_group" />
+  </EntityType>
+  <EntityType Name="khoa">
+    <Key>
+      <PropertyRef Name="ma_khoa" />
+    </Key>
+    <Property Name="ma_khoa" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ten_khoa" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="nganh" Relationship="Self.FK_nganh_khoa" FromRole="khoa" ToRole="nganh" />
+  </EntityType>
+  <EntityType Name="like">
+    <Key>
+      <PropertyRef Name="uid" />
+      <PropertyRef Name="id_post" />
+    </Key>
+    <Property Name="uid" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="id_post" Type="Int32" Nullable="false" />
+    <Property Name="time" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="post" Relationship="Self.FK_like_post" FromRole="like" ToRole="post" />
+    <NavigationProperty Name="user" Relationship="Self.FK_like_user" FromRole="like" ToRole="user" />
+  </EntityType>
+  <EntityType Name="lop">
+    <Key>
+      <PropertyRef Name="ma_lop" />
+    </Key>
+    <Property Name="ma_lop" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="ten_lop" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="ma_nganh" Type="Int32" />
+    <NavigationProperty Name="nganh" Relationship="Self.FK_lop_nganh" FromRole="lop" ToRole="nganh" />
+    <NavigationProperty Name="user" Relationship="Self.FK_user_lop" FromRole="lop" ToRole="user" />
+  </EntityType>
+  <EntityType Name="mon_hoc">
+    <Key>
+      <PropertyRef Name="ma_mon_hoc" />
+    </Key>
+    <Property Name="ma_mon_hoc" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ten_mon_hoc" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="tai_lieu" Relationship="Self.FK_tai_lieu_mon_hoc" FromRole="mon_hoc" ToRole="tai_lieu" />
+  </EntityType>
+  <EntityType Name="nganh">
+    <Key>
+      <PropertyRef Name="ma_nganh" />
+    </Key>
+    <Property Name="ma_nganh" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ten_nganh" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="ma_khoa" Type="Int32" />
+    <NavigationProperty Name="khoa" Relationship="Self.FK_nganh_khoa" FromRole="nganh" ToRole="khoa" />
+    <NavigationProperty Name="lop" Relationship="Self.FK_lop_nganh" FromRole="nganh" ToRole="lop" />
+  </EntityType>
+  <EntityType Name="post">
+    <Key>
+      <PropertyRef Name="id_post" />
+    </Key>
+    <Property Name="id_post" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="noi_dung" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="uid" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="ma_nhom" Type="Int32" />
+    <Property Name="ngay_dang" Type="DateTime" Precision="3" />
+    <Property Name="id_category" Type="Int32" />
+    <Property Name="status" Type="Boolean" />
+    <NavigationProperty Name="anh" Relationship="Self.FK_anh_post" FromRole="post" ToRole="anh" />
+    <NavigationProperty Name="category" Relationship="Self.FK_post_category" FromRole="post" ToRole="category" />
+    <NavigationProperty Name="comment" Relationship="Self.FK_comment_post" FromRole="post" ToRole="comment" />
+    <NavigationProperty Name="like" Relationship="Self.FK_like_post" FromRole="post" ToRole="like" />
+    <NavigationProperty Name="user_group" Relationship="Self.FK_post_user_group" FromRole="post" ToRole="user_group" />
+  </EntityType>
+  <EntityType Name="role">
+    <Key>
+      <PropertyRef Name="id_role" />
+    </Key>
+    <Property Name="id_role" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="role_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="user_group" Relationship="Self.FK_user_group_role" FromRole="role" ToRole="user_group" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="tai_lieu">
+    <Key>
+      <PropertyRef Name="id_tai_lieu" />
+    </Key>
+    <Property Name="id_tai_lieu" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ten" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="link" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="anh" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="mo_ta" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="ma_mon_hoc" Type="Int32" />
+    <Property Name="uid" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="mon_hoc" Relationship="Self.FK_tai_lieu_mon_hoc" FromRole="tai_lieu" ToRole="mon_hoc" />
+    <NavigationProperty Name="user" Relationship="Self.FK_tai_lieu_user" FromRole="tai_lieu" ToRole="user" />
+  </EntityType>
+  <EntityType Name="user">
+    <Key>
+      <PropertyRef Name="uid" />
+    </Key>
+    <Property Name="uid" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ho_ten" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="dia_chi" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="ma_lop" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="role" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="anh" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="gioi_tinh" Type="Boolean" />
+    <NavigationProperty Name="comment" Relationship="Self.FK_comment_user" FromRole="user" ToRole="comment" />
+    <NavigationProperty Name="chat" Relationship="Self.FK_chat_user1" FromRole="user" ToRole="chat" />
+    <NavigationProperty Name="like" Relationship="Self.FK_like_user" FromRole="user" ToRole="like" />
+    <NavigationProperty Name="lop" Relationship="Self.FK_user_lop" FromRole="user" ToRole="lop" />
+    <NavigationProperty Name="tai_lieu" Relationship="Self.FK_tai_lieu_user" FromRole="user" ToRole="tai_lieu" />
+    <NavigationProperty Name="user_group" Relationship="Self.FK_user_group_user1" FromRole="user" ToRole="user_group" />
+  </EntityType>
+  <EntityType Name="user_group">
+    <Key>
+      <PropertyRef Name="uid" />
+      <PropertyRef Name="ma_nhom" />
+    </Key>
+    <Property Name="uid" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="ma_nhom" Type="Int32" Nullable="false" />
+    <Property Name="id_role" Type="Int32" />
+    <NavigationProperty Name="group" Relationship="Self.FK_user_group_group1" FromRole="user_group" ToRole="group" />
+    <NavigationProperty Name="post" Relationship="Self.FK_post_user_group" FromRole="user_group" ToRole="post" />
+    <NavigationProperty Name="role" Relationship="Self.FK_user_group_role" FromRole="user_group" ToRole="role" />
+    <NavigationProperty Name="user" Relationship="Self.FK_user_group_user1" FromRole="user_group" ToRole="user" />
+  </EntityType>
+  <Association Name="FK_anh_post">
+    <End Role="post" Type="Self.post" Multiplicity="0..1" />
+    <End Role="anh" Type="Self.anh" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="post">
+        <PropertyRef Name="id_post" />
+      </Principal>
+      <Dependent Role="anh">
+        <PropertyRef Name="id_post" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_post_category">
+    <End Role="category" Type="Self.category" Multiplicity="0..1" />
+    <End Role="post" Type="Self.post" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="category">
+        <PropertyRef Name="id_category" />
+      </Principal>
+      <Dependent Role="post">
+        <PropertyRef Name="id_category" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_comment_comment">
+    <End Role="comment" Type="Self.comment" Multiplicity="0..1" />
+    <End Role="comment1" Type="Self.comment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="comment">
+        <PropertyRef Name="id_comment" />
+      </Principal>
+      <Dependent Role="comment1">
+        <PropertyRef Name="id_parent" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_comment_post">
+    <End Role="post" Type="Self.post" Multiplicity="1" />
+    <End Role="comment" Type="Self.comment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="post">
+        <PropertyRef Name="id_post" />
+      </Principal>
+      <Dependent Role="comment">
+        <PropertyRef Name="id_post" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_comment_user">
+    <End Role="user" Type="Self.user" Multiplicity="1" />
+    <End Role="comment" Type="Self.comment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="user">
+        <PropertyRef Name="uid" />
+      </Principal>
+      <Dependent Role="comment">
+        <PropertyRef Name="uid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_chat_user1">
+    <End Role="user" Type="Self.user" Multiplicity="0..1" />
+    <End Role="chat" Type="Self.chat" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="user">
+        <PropertyRef Name="uid" />
+      </Principal>
+      <Dependent Role="chat">
+        <PropertyRef Name="uid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_user_group_group1">
+    <End Role="group" Type="Self.group" Multiplicity="1" />
+    <End Role="user_group" Type="Self.user_group" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="group">
+        <PropertyRef Name="ma_nhom" />
+      </Principal>
+      <Dependent Role="user_group">
+        <PropertyRef Name="ma_nhom" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_nganh_khoa">
+    <End Role="khoa" Type="Self.khoa" Multiplicity="0..1" />
+    <End Role="nganh" Type="Self.nganh" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="khoa">
+        <PropertyRef Name="ma_khoa" />
+      </Principal>
+      <Dependent Role="nganh">
+        <PropertyRef Name="ma_khoa" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_like_post">
+    <End Role="post" Type="Self.post" Multiplicity="1" />
+    <End Role="like" Type="Self.like" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="post">
+        <PropertyRef Name="id_post" />
+      </Principal>
+      <Dependent Role="like">
+        <PropertyRef Name="id_post" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_like_user">
+    <End Role="user" Type="Self.user" Multiplicity="1" />
+    <End Role="like" Type="Self.like" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="user">
+        <PropertyRef Name="uid" />
+      </Principal>
+      <Dependent Role="like">
+        <PropertyRef Name="uid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_lop_nganh">
+    <End Role="nganh" Type="Self.nganh" Multiplicity="0..1" />
+    <End Role="lop" Type="Self.lop" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="nganh">
+        <PropertyRef Name="ma_nganh" />
+      </Principal>
+      <Dependent Role="lop">
+        <PropertyRef Name="ma_nganh" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_user_lop">
+    <End Role="lop" Type="Self.lop" Multiplicity="0..1" />
+    <End Role="user" Type="Self.user" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="lop">
+        <PropertyRef Name="ma_lop" />
+      </Principal>
+      <Dependent Role="user">
+        <PropertyRef Name="ma_lop" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tai_lieu_mon_hoc">
+    <End Role="mon_hoc" Type="Self.mon_hoc" Multiplicity="0..1" />
+    <End Role="tai_lieu" Type="Self.tai_lieu" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="mon_hoc">
+        <PropertyRef Name="ma_mon_hoc" />
+      </Principal>
+      <Dependent Role="tai_lieu">
+        <PropertyRef Name="ma_mon_hoc" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_post_user_group">
+    <End Role="user_group" Type="Self.user_group" Multiplicity="0..1" />
+    <End Role="post" Type="Self.post" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="user_group">
+        <PropertyRef Name="uid" />
+        <PropertyRef Name="ma_nhom" />
+      </Principal>
+      <Dependent Role="post">
+        <PropertyRef Name="uid" />
+        <PropertyRef Name="ma_nhom" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_user_group_role">
+    <End Role="role" Type="Self.role" Multiplicity="0..1" />
+    <End Role="user_group" Type="Self.user_group" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="role">
+        <PropertyRef Name="id_role" />
+      </Principal>
+      <Dependent Role="user_group">
+        <PropertyRef Name="id_role" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tai_lieu_user">
+    <End Role="user" Type="Self.user" Multiplicity="0..1" />
+    <End Role="tai_lieu" Type="Self.tai_lieu" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="user">
+        <PropertyRef Name="uid" />
+      </Principal>
+      <Dependent Role="tai_lieu">
+        <PropertyRef Name="uid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_user_group_user1">
+    <End Role="user" Type="Self.user" Multiplicity="1" />
+    <End Role="user_group" Type="Self.user_group" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="user">
+        <PropertyRef Name="uid" />
+      </Principal>
+      <Dependent Role="user_group">
+        <PropertyRef Name="uid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="tnut_socialEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="account" EntityType="Self.account" />
+    <EntitySet Name="anh" EntityType="Self.anh" />
+    <EntitySet Name="category" EntityType="Self.category" />
+    <EntitySet Name="comment" EntityType="Self.comment" />
+    <EntitySet Name="chat" EntityType="Self.chat" />
+    <EntitySet Name="group" EntityType="Self.group" />
+    <EntitySet Name="khoa" EntityType="Self.khoa" />
+    <EntitySet Name="like" EntityType="Self.like" />
+    <EntitySet Name="lop" EntityType="Self.lop" />
+    <EntitySet Name="mon_hoc" EntityType="Self.mon_hoc" />
+    <EntitySet Name="nganh" EntityType="Self.nganh" />
+    <EntitySet Name="post" EntityType="Self.post" />
+    <EntitySet Name="role" EntityType="Self.role" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+    <EntitySet Name="tai_lieu" EntityType="Self.tai_lieu" />
+    <EntitySet Name="user" EntityType="Self.user" />
+    <EntitySet Name="user_group" EntityType="Self.user_group" />
+    <AssociationSet Name="FK_anh_post" Association="Self.FK_anh_post">
+      <End Role="post" EntitySet="post" />
+      <End Role="anh" EntitySet="anh" />
+    </AssociationSet>
+    <AssociationSet Name="FK_post_category" Association="Self.FK_post_category">
+      <End Role="category" EntitySet="category" />
+      <End Role="post" EntitySet="post" />
+    </AssociationSet>
+    <AssociationSet Name="FK_comment_comment" Association="Self.FK_comment_comment">
+      <End Role="comment" EntitySet="comment" />
+      <End Role="comment1" EntitySet="comment" />
+    </AssociationSet>
+    <AssociationSet Name="FK_comment_post" Association="Self.FK_comment_post">
+      <End Role="post" EntitySet="post" />
+      <End Role="comment" EntitySet="comment" />
+    </AssociationSet>
+    <AssociationSet Name="FK_comment_user" Association="Self.FK_comment_user">
+      <End Role="user" EntitySet="user" />
+      <End Role="comment" EntitySet="comment" />
+    </AssociationSet>
+    <AssociationSet Name="FK_chat_user1" Association="Self.FK_chat_user1">
+      <End Role="user" EntitySet="user" />
+      <End Role="chat" EntitySet="chat" />
+    </AssociationSet>
+    <AssociationSet Name="FK_user_group_group1" Association="Self.FK_user_group_group1">
+      <End Role="group" EntitySet="group" />
+      <End Role="user_group" EntitySet="user_group" />
+    </AssociationSet>
+    <AssociationSet Name="FK_nganh_khoa" Association="Self.FK_nganh_khoa">
+      <End Role="khoa" EntitySet="khoa" />
+      <End Role="nganh" EntitySet="nganh" />
+    </AssociationSet>
+    <AssociationSet Name="FK_like_post" Association="Self.FK_like_post">
+      <End Role="post" EntitySet="post" />
+      <End Role="like" EntitySet="like" />
+    </AssociationSet>
+    <AssociationSet Name="FK_like_user" Association="Self.FK_like_user">
+      <End Role="user" EntitySet="user" />
+      <End Role="like" EntitySet="like" />
+    </AssociationSet>
+    <AssociationSet Name="FK_lop_nganh" Association="Self.FK_lop_nganh">
+      <End Role="nganh" EntitySet="nganh" />
+      <End Role="lop" EntitySet="lop" />
+    </AssociationSet>
+    <AssociationSet Name="FK_user_lop" Association="Self.FK_user_lop">
+      <End Role="lop" EntitySet="lop" />
+      <End Role="user" EntitySet="user" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tai_lieu_mon_hoc" Association="Self.FK_tai_lieu_mon_hoc">
+      <End Role="mon_hoc" EntitySet="mon_hoc" />
+      <End Role="tai_lieu" EntitySet="tai_lieu" />
+    </AssociationSet>
+    <AssociationSet Name="FK_post_user_group" Association="Self.FK_post_user_group">
+      <End Role="user_group" EntitySet="user_group" />
+      <End Role="post" EntitySet="post" />
+    </AssociationSet>
+    <AssociationSet Name="FK_user_group_role" Association="Self.FK_user_group_role">
+      <End Role="role" EntitySet="role" />
+      <End Role="user_group" EntitySet="user_group" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tai_lieu_user" Association="Self.FK_tai_lieu_user">
+      <End Role="user" EntitySet="user" />
+      <End Role="tai_lieu" EntitySet="tai_lieu" />
+    </AssociationSet>
+    <AssociationSet Name="FK_user_group_user1" Association="Self.FK_user_group_user1">
+      <End Role="user" EntitySet="user" />
+      <End Role="user_group" EntitySet="user_group" />
+    </AssociationSet>
+    <FunctionImport Name="sp_alterdiagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="version" Mode="In" Type="Int32" />
+      <Parameter Name="definition" Mode="In" Type="Binary" />
+    </FunctionImport>
+    <FunctionImport Name="sp_creatediagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="version" Mode="In" Type="Int32" />
+      <Parameter Name="definition" Mode="In" Type="Binary" />
+    </FunctionImport>
+    <FunctionImport Name="sp_dropdiagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(tnut_socialModel.sp_helpdiagramdefinition_Result)">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(tnut_socialModel.sp_helpdiagrams_Result)">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_renamediagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="new_diagramname" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="sp_upgraddiagrams" />
+  </EntityContainer>
+  <ComplexType Name="sp_helpdiagramdefinition_Result">
+    <Property Type="Int32" Name="version" Nullable="true" />
+    <Property Type="Binary" Name="definition" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="sp_helpdiagrams_Result">
+    <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
+    <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
+    <Property Type="Int32" Name="ID" Nullable="false" />
+    <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
+    <Property Type="Int32" Name="OwnerID" Nullable="false" />
+  </ComplexType>
+</Schema>
