@@ -1,7 +1,6 @@
 ﻿
 @{
     ViewBag.Title = "Chat";
-    Layout = null;
 }
 
 <!DOCTYPE html>
@@ -45,13 +44,14 @@
 
                             @foreach (var nguoi_nhan in ViewBag.list_nguoi_nhan)
                             {
-                                <li class="clearfix nguoi_nhan" id="@nguoi_nhan.uid">
-                                    <img src="user.png" alt="avatar">
-                                    <div class="about">
-                                        <div class="name">@nguoi_nhan.ho_ten</div>
-                                        <div class="status"> <i class="fa fa-circle offline"></i> left 7 mins ago </div>
-                                    </div>
-                                </li>
+                            <li class="clearfix nguoi_nhan" id="@nguoi_nhan.uid">
+
+                                <img src="~/asset/images/avatar/@nguoi_nhan.anh" />
+                                <div class="about">
+                                    <div class="name">@nguoi_nhan.ho_ten</div>
+                                    <div class="status"> <i class="fa fa-circle offline"></i> left 7 mins ago </div>
+                                </div>
+                            </li>
                             }
 
                         </ul>
@@ -61,10 +61,10 @@
                             <div class="row">
                                 <div class="col-lg-6">
                                     <a href="javascript:void(0);" data-toggle="modal" data-target="#view_info">
-                                        <img src="user.png" alt="avatar">
+                                        <img src="~/asset/images/avatar/@ViewBag.nguoi_nhan.anh" alt="avatar" />
                                     </a>
                                     <div class="chat-about">
-                                        <h6 class="m-b-0">@Session["name"].ToString()</h6>
+                                        <h6 class="m-b-0">@ViewBag.nguoi_nhan.ho_ten</h6>
                                     </div>
                                 </div>
                             </div>

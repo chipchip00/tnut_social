@@ -148,8 +148,10 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="ChatHub.cs" />
     <Compile Include="Controllers\ChatController.cs" />
+    <Compile Include="Controllers\GroupController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\ProfileController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -159,6 +161,7 @@
     <Compile Include="Models\anh.cs">
       <DependentUpon>tnut_social.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\BaiViet.cs" />
     <Compile Include="Models\category.cs">
       <DependentUpon>tnut_social.tt</DependentUpon>
     </Compile>
@@ -190,12 +193,6 @@
       <DependentUpon>tnut_social.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\role.cs">
-      <DependentUpon>tnut_social.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\sp_helpdiagramdefinition_Result.cs">
-      <DependentUpon>tnut_social.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\sp_helpdiagrams_Result.cs">
       <DependentUpon>tnut_social.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\sysdiagrams.cs">
@@ -230,9 +227,17 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="asset\chat.css" />
+    <Content Include="asset\images\avatar\no-image.png" />
+    <Content Include="asset\images\group\no-image.jpg" />
+    <Content Include="asset\images\logo_tnut_social.jpg" />
+    <Content Include="asset\images\post\img1.jpg" />
+    <Content Include="asset\images\post\img2.png" />
+    <Content Include="asset\images\post\img3.jpg" />
     <Content Include="asset\js\Chat.js" />
     <Content Include="asset\js\Chat_jquery.js" />
+    <Content Include="asset\js\main.js" />
     <Content Include="asset\login.css" />
+    <Content Include="asset\main.css" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
@@ -243,8 +248,8 @@
     <Content Include="Content\Site.css" />
     <Content Include="Models\tnut_social.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>tnut_social.Context.cs</LastGenOutput>
       <DependentUpon>tnut_social.edmx</DependentUpon>
+      <LastGenOutput>tnut_social.Context.cs</LastGenOutput>
     </Content>
     <Content Include="Models\tnut_social.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -284,14 +289,16 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Chat\Index.cshtml" />
     <Content Include="Views\Login\Index.cshtml" />
+    <Content Include="Views\Group\Index.cshtml" />
+    <Content Include="Views\Group\ChiTiet.cshtml" />
+    <Content Include="Views\Login\forgot.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Profile\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

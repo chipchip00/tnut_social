@@ -1,5 +1,11 @@
 ﻿
 $(document).ready(function () {
+    $("#message").keyup(function (event) {
+        if (event.keyCode === 13) {
+            $("#sendmessage").click();
+        }
+    });
+
     var d = $(".chat-history");
     d.scrollTop(d.prop("scrollHeight"))
     $(".nguoi_nhan").on('click', function () {
@@ -16,6 +22,7 @@ $(document).ready(function () {
         let searchParams = new URLSearchParams(window.location.search);
         let id_nguoi_nhan = searchParams.get('id_nguoi_nhan');
         var message = $("#message").val();
+        
         $.post("chat/save",
             {
                 id_nguoi_nhan: id_nguoi_nhan,
@@ -43,9 +50,10 @@ $(document).ready(function () {
                             // Call the Send method on the hub.
                             chat.server.send($('#message').val());
                             // Clear text box and reset focus for next comment.
-                            //$('#message').val('').focus();
+                            $('#message').val('').focus();
 
                     });
+
                 }
         });
     });

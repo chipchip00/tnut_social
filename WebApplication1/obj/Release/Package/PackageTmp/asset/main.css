@@ -1,0 +1,166 @@
+﻿
+.nvbar1 img {
+    width: 50px;
+    height: 40px;
+}
+
+.group-in-right {
+    background-color: #b5b0a3;
+    position: -webkit-sticky; /* Safari */
+    position: sticky;
+    top: 2px;
+    max-height: 550px;
+    width: 30%;
+    margin-left: 10px;
+    margin-top: 2px;
+    border-radius: 10px;
+}
+
+.main-post {
+    background-color: #343a40;
+    width: 68%;
+    padding: 20px;
+}
+
+.image-post img, .text-post {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.image-post {
+    max-height: 100%;
+}
+
+@media only screen and (max-width: 800px) {
+    .group-in-right {
+        display: none;
+    }
+
+    .main-post {
+        width: 100%;
+    }
+}
+
+.avatar img {
+    width: 100%;
+    border-radius: 50%;
+    padding: 10px 20%;
+}
+
+.description {
+    padding: 5px 15px;
+    font-size: 18px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+.action-post like-post {
+    width: 20%;
+}
+
+.action-post send-comment {
+    width: 20%;
+}
+
+.action-post input {
+    width: 60%;
+    margin-left: 20px;
+    padding: 5px;
+}
+
+.action-post {
+    margin: 10px;
+}
+
+.a-post {
+    background-color: white;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid blue;
+    border-top: 1px solid blue;
+    padding: 10px;
+}
+
+.a-comment {
+    background-color: aliceblue;
+    background-size: auto;
+    width: fit-content;
+    margin: 5px;
+    padding: 10px;
+}
+
+.a-child-comment {
+    background-color: aliceblue;
+    background-size: auto;
+    width: fit-content;
+    margin-left: 50px;
+    padding: 10px;
+}
+
+.main {
+    border-top: 2px solid white;
+}
+
+.main-section {
+    padding: 0;
+    margin: 0;
+}
+.comment-section {
+    display:none;
+}
+.group1 img {
+    max-width: 95%;
+    max-height: 90%;
+}
+
+.group1 {
+    margin: 20px;
+    border-radius: 15px;
+    border: 2px solid skyblue;
+    padding: 10px;
+    height: 200px;
+}
+
+@media only screen and (max-width: 767px) {
+    .sub-des {
+        display: none;
+    }
+}
+.group-top-info img {
+    width: 100%;
+    height: 300px;
+}
+
+.form-dang-bai {
+    padding: 10px 10%;
+    display: block;
+    border-top: 1px solid blue;
+
+    margin-bottom: 10px;
+}
+.main-post-in-group{
+    margin: auto !important;
+}
+.gallery-1 img{
+    width:100%;
+}
+.gallery-2 img {
+    width: 45%;
+}
+.gallery-3 img {
+    width: 45%;
+}
+.gallery-4 img {
+    width: 45%;
+}
+.gallery-5 img {
+    width: 45%;
+}
+.image-post {
+    padding:10px;
+}
+.img-avatar img{
+    width:50px;
+    height:50px;
+    padding:5px;
+    border-radius:50%;
+}

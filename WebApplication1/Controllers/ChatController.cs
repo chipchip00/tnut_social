@@ -12,11 +12,11 @@ namespace WebApplication1.Controllers
     public class ChatController : Controller
     {
         // GET: Chat
-        public ActionResult Index(string id_nguoi_nhan="1")
+        public ActionResult Index(string id_nguoi_nhan="")
         {
             if (Session["username"]== null)
             {
-                return RedirectToAction("Index", "Login");
+                return RedirectToAction("Index", "Login", new { returnUrl = HttpContext.Request.Url.GetLeftPart(UriPartial.Authority) + "/chat" });
             }
             tnut_socialEntities db = new tnut_socialEntities();
             string username = Session["username"].ToString();
@@ -31,10 +31,11 @@ namespace WebApplication1.Controllers
                                 select dt_user).Distinct();
             
             var data = db_nguoi_nhan.FirstOrDefault();
-            if (id_nguoi_nhan == "1") id_nguoi_nhan = data.uid;
+            if (id_nguoi_nhan == "") id_nguoi_nhan = data.uid;
             Session["default_reciver"] = id_nguoi_nhan;
             var chat_db = db.chat.Where(dt => (dt.uid == username && dt.nguoi_nhan== id_nguoi_nhan)||(dt.uid == id_nguoi_nhan && dt.nguoi_nhan == username)).ToList();
             var recievers = db_nguoi_nhan.ToList();
+            ViewBag.nguoi_nhan = recievers.Where(user => user.uid == id_nguoi_nhan).FirstOrDefault();
             ViewBag.list_nguoi_nhan = recievers;
             ViewBag.nd_chat = chat_db;
             return View(db);

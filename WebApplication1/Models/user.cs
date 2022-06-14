@@ -11,7 +11,8 @@ namespace WebApplication1.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class user
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -27,6 +28,8 @@ namespace WebApplication1.Models
         public string uid { get; set; }
         public string password { get; set; }
         public string ho_ten { get; set; }
+        [Required(ErrorMessage = "Trường email không được trống!")]
+        [EmailAddress(ErrorMessage = "Địa chỉ email không hợp lệ")]
         public string email { get; set; }
         public string dia_chi { get; set; }
         public string ma_lop { get; set; }

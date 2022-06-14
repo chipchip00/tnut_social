@@ -1,0 +1,26 @@
+﻿@model IEnumerable<WebApplication1.Models.group>
+@{
+    ViewBag.Title = "Danh sách nhóm";
+}
+<h1>@ViewBag.Message</h1>
+<div class="container">
+    <div class="groups1">
+        @foreach (var group in Model)
+        {
+            <div class="group1 row">
+                <div class="image-group col-md-6">
+                    <img src="~/asset/images/group/@group.anh" />
+                </div>
+                <div class="des1 col-md-6">
+                    <a href="/group/chitiet?ma_nhom=@group.ma_nhom"><h3>@group.ten_nhom</h3></a>
+                   
+                    <p class="sub-des">@group.mo_ta</p>
+                </div>
+            </div>
+        }
+
+
+    </div>
+</div>
+
+

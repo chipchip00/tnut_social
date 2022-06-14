@@ -39,10 +39,10 @@
       <PropertyRef Name="id_chat" />
     </Key>
     <Property Name="id_chat" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="noi_dung" Type="nvarchar(max)" />
-    <Property Name="uid" Type="nvarchar" MaxLength="20" />
-    <Property Name="nguoi_nhan" Type="nvarchar" MaxLength="20" />
-    <Property Name="time" Type="datetime" />
+    <Property Name="noi_dung" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="uid" Type="nvarchar" MaxLength="20" Nullable="false" />
+    <Property Name="nguoi_nhan" Type="nvarchar" MaxLength="20" Nullable="false" />
+    <Property Name="time" Type="datetime" Nullable="false" />
   </EntityType>
   <EntityType Name="group">
     <Key>
@@ -51,6 +51,7 @@
     <Property Name="ma_nhom" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="ten_nhom" Type="nvarchar" MaxLength="100" />
     <Property Name="mo_ta" Type="nvarchar" MaxLength="500" />
+    <Property Name="anh" Type="nvarchar" MaxLength="100" />
   </EntityType>
   <EntityType Name="khoa">
     <Key>
@@ -204,7 +205,7 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_chat_user1">
-    <End Role="user" Type="Self.user" Multiplicity="0..1" />
+    <End Role="user" Type="Self.user" Multiplicity="1" />
     <End Role="chat" Type="Self.chat" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="user">
@@ -361,37 +362,6 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
-  <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-    <Parameter Name="owner_id" Type="int" Mode="In" />
-    <Parameter Name="version" Type="int" Mode="In" />
-    <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
-  </Function>
-  <Function Name="sp_creatediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-    <Parameter Name="owner_id" Type="int" Mode="In" />
-    <Parameter Name="version" Type="int" Mode="In" />
-    <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
-  </Function>
-  <Function Name="sp_dropdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-    <Parameter Name="owner_id" Type="int" Mode="In" />
-  </Function>
-  <Function Name="sp_helpdiagramdefinition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-    <Parameter Name="owner_id" Type="int" Mode="In" />
-  </Function>
-  <Function Name="sp_helpdiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-    <Parameter Name="owner_id" Type="int" Mode="In" />
-  </Function>
-  <Function Name="sp_renamediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-    <Parameter Name="owner_id" Type="int" Mode="In" />
-    <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
-  </Function>
-  <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
   <EntityContainer Name="tnut_socialModelStoreContainer">
     <EntitySet Name="account" EntityType="Self.account" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="anh" EntityType="Self.anh" Schema="dbo" store:Type="Tables" />

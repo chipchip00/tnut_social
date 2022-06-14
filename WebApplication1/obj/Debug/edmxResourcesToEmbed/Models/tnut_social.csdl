@@ -45,10 +45,10 @@
       <PropertyRef Name="id_chat" />
     </Key>
     <Property Name="id_chat" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="noi_dung" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-    <Property Name="uid" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-    <Property Name="nguoi_nhan" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-    <Property Name="time" Type="DateTime" Precision="3" />
+    <Property Name="noi_dung" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="uid" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="nguoi_nhan" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="time" Type="DateTime" Nullable="false" Precision="3" />
     <NavigationProperty Name="user" Relationship="Self.FK_chat_user1" FromRole="chat" ToRole="user" />
   </EntityType>
   <EntityType Name="group">
@@ -58,6 +58,7 @@
     <Property Name="ma_nhom" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="ten_nhom" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
     <Property Name="mo_ta" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="anh" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
     <NavigationProperty Name="user_group" Relationship="Self.FK_user_group_group1" FromRole="group" ToRole="user_group" />
   </EntityType>
   <EntityType Name="khoa">
@@ -250,7 +251,7 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_chat_user1">
-    <End Role="user" Type="Self.user" Multiplicity="0..1" />
+    <End Role="user" Type="Self.user" Multiplicity="1" />
     <End Role="chat" Type="Self.chat" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="user">
@@ -481,46 +482,5 @@
       <End Role="user" EntitySet="user" />
       <End Role="user_group" EntitySet="user_group" />
     </AssociationSet>
-    <FunctionImport Name="sp_alterdiagram">
-      <Parameter Name="diagramname" Mode="In" Type="String" />
-      <Parameter Name="owner_id" Mode="In" Type="Int32" />
-      <Parameter Name="version" Mode="In" Type="Int32" />
-      <Parameter Name="definition" Mode="In" Type="Binary" />
-    </FunctionImport>
-    <FunctionImport Name="sp_creatediagram">
-      <Parameter Name="diagramname" Mode="In" Type="String" />
-      <Parameter Name="owner_id" Mode="In" Type="Int32" />
-      <Parameter Name="version" Mode="In" Type="Int32" />
-      <Parameter Name="definition" Mode="In" Type="Binary" />
-    </FunctionImport>
-    <FunctionImport Name="sp_dropdiagram">
-      <Parameter Name="diagramname" Mode="In" Type="String" />
-      <Parameter Name="owner_id" Mode="In" Type="Int32" />
-    </FunctionImport>
-    <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(tnut_socialModel.sp_helpdiagramdefinition_Result)">
-      <Parameter Name="diagramname" Mode="In" Type="String" />
-      <Parameter Name="owner_id" Mode="In" Type="Int32" />
-    </FunctionImport>
-    <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(tnut_socialModel.sp_helpdiagrams_Result)">
-      <Parameter Name="diagramname" Mode="In" Type="String" />
-      <Parameter Name="owner_id" Mode="In" Type="Int32" />
-    </FunctionImport>
-    <FunctionImport Name="sp_renamediagram">
-      <Parameter Name="diagramname" Mode="In" Type="String" />
-      <Parameter Name="owner_id" Mode="In" Type="Int32" />
-      <Parameter Name="new_diagramname" Mode="In" Type="String" />
-    </FunctionImport>
-    <FunctionImport Name="sp_upgraddiagrams" />
   </EntityContainer>
-  <ComplexType Name="sp_helpdiagramdefinition_Result">
-    <Property Type="Int32" Name="version" Nullable="true" />
-    <Property Type="Binary" Name="definition" Nullable="true" />
-  </ComplexType>
-  <ComplexType Name="sp_helpdiagrams_Result">
-    <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
-    <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
-    <Property Type="Int32" Name="ID" Nullable="false" />
-    <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
-    <Property Type="Int32" Name="OwnerID" Nullable="false" />
-  </ComplexType>
 </Schema>

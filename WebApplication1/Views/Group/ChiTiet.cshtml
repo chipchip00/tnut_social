@@ -1,0 +1,91 @@
+﻿
+@model IEnumerable<WebApplication1.Models.BaiViet>
+@{
+    ViewBag.Title = "ChiTiet";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <div class="group-top-info">
+        <img src="~/asset/images/group/@ViewBag.nhom.anh" />
+        <h3>@ViewBag.nhom.ten_nhom</h3>
+    </div>
+    <div class="form-dang-bai">
+        @using (Html.BeginForm("addpost", "group", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+
+            <textarea class="form-control" id="noi_dung_post" rows="3" name="noi_dung_post" placeholder="Nhập nội dung bài đăng"></textarea>
+            <p></p>
+            <input type="file" accept="image/*" id="file" name="uploadFile" multiple>
+            <p></p>
+            <input type="hidden" name="get_id_nhom" value="@ViewBag.nhom.ma_nhom"/>
+            <input type="submit" value="Đăng bài" class="btn btn-info">
+        }
+        @*<form method="post" action="/group/addpost">
+            <textarea class="form-control" id="noi_dung_post" rows="3" name="noi_dung_post" placeholder="Nhập nội dung bài đăng"></textarea>
+            <p></p>
+            <input type="file" accept="image/*" id="file" name="file" multiple>
+            <p></p>
+            <input type="submit" value="Đăng bài" class="btn btn-info">
+        </form>*@
+    </div>
+    <div class="main-post main-post-in-group">
+        @foreach (var post in Model)
+        {
+            <div class="a-post">
+                <div class="user-group">
+                    <b><span>@post.nguoi_dang >></span><span> @post.ten_nhom</span></b>
+                </div>
+                <div class="text-post">
+                    @post.nd
+                </div>
+                <div class="image-post">
+                    @foreach (var img in post.img)
+                    {
+                        <img src="~/asset/images/post/@img.link" alt="@img.mo_ta" />
+
+                    }
+                    @*<img src="~/asset/images/post/img1.jpg" alt="Ảnh lớp học tiếng Nhật" />*@
+                </div>
+                <div class="action-post">
+                    <button id="like-button" class="btn btn-info">Like</button>
+                    <input type="text" placeholder="Thêm bình luận mới">
+                    <button id="send-comment" class="btn btn-success">Gửi</button>
+                    <i class="bi bi-hand-thumbs-up"></i>
+                    <span class="badge rounded-pill badge-notification bg-danger">@post.like.Count()</span>
+                    <i class="bi bi-chat-left-text fa-2x show_comment"></i>
+                    <span class="badge rounded-pill badge-notification bg-danger">@post.cmt.Count()</span>
+
+                </div>
+                <div class="comment-section">
+                    @foreach (var comment in post.cmt)
+                    {
+                        <div class="a-comment">
+                            <p><b>@comment.ten</b></p>
+                            <p>@comment.nd</p>
+                            <a href="#"> Trả lời</a>
+                        </div>
+                    }
+                </div>
+                @*<div class="comment-section">
+                    <div class="a-comment">
+                        <p><b>Dương Minh Chiến</b></p>
+                        <p>Bài viết câu like quá tệ.</p>
+                        <a href="#"> Trả lời</a>
+                    </div>
+                    <div class="a-child-comment">
+                        <p><b>Dương Văn Huân</b></p>
+                        <p>Bình luận hay quá</p>
+                    </div>
+                    <div class="a-comment">
+                        <p><b>Nguyễn Tá Anh</b></p>
+                        <p>Bài viết hay quá, cảm ơn chị ạ.</p>
+                        <a href="#"> Trả lời</a>
+
+                    </div>*@
+
+            </div>
+        }
+    </div>
+</div>
+

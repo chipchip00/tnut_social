@@ -1,31 +1,110 @@
-﻿@{
-    ViewBag.Title = "Home Page";
+﻿@model IEnumerable<WebApplication1.Models.BaiViet>
+@{
+    ViewBag.Title = "Trang chủ";
+
 }
 
-<div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
-</div>
+<div class="container-fluid main">
+    <div class="row main-section">
+        <div class="main-post">
+            @foreach (var post in Model)
+            {
+                string class_heart =" bi-heart";
+                if (post.user_like == true) { class_heart = "bi-heart-fill"; }
+                <div class="a-post">
+                    <div class="user-group">
 
-<div class="row">
-    <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>
-            ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-            enables a clean separation of concerns and gives you full control over markup
-            for enjoyable, agile development.
-        </p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
+                        <b><span class="img-avatar"><img src="~/asset/images/avatar/@post.avatar" /></span><span>@post.nguoi_dang >></span><span><a href="/group/chitiet?ma_nhom=@post.ma_nhom"> @post.ten_nhom</a></span></b>
+                    </div>
+                    <div class="text-post">
+                        @post.nd
+                    </div>
+                    <div class="image-post gallery-@post.img.Count()">
+                        @foreach (var img in post.img)
+                        {
+                            <img src="~/asset/images/post/@img.link" alt="@img.mo_ta" />
+
+                        }
+                        @*<img src="~/asset/images/post/img1.jpg" alt="Ảnh lớp học tiếng Nhật" />*@
+                    </div>
+                    <div class="action-post">
+                        <i class="bi @class_heart fa-2x like-button" id="like-post-@post.id_post" ></i>
+                        <input type="text" class="input-comment" id="input-comment-@post.id_post" placeholder="Thêm bình luận mới">
+                        <button id="send-comment-@post.id_post" class="btn btn-info send-comment"><i class="bi bi-send-check-fill"></i></button>
+                        <i class="bi bi-hand-thumbs-up"></i>
+                        <span class="badge rounded-pill badge-notification bg-danger"id="like-count-@post.id_post">@post.like.Count()</span>
+                        <i class="bi bi-chat-left-text fa-2x show_comment" id="show-comment-@post.id_post"></i>
+                        <span class="badge rounded-pill badge-notification bg-danger" id="comment-count-@post.id_post">@post.cmt.Count()</span>
+
+                    </div>
+                    <div class="comment-section" id="comment-section-@post.id_post">
+                        @foreach (var comment in post.cmt)
+                        {
+                            <div class="a-comment">
+                                <div class="img-avatar-comment "><img src="~/asset/images/avatar/@comment.avatar" /></div>
+                                <div class=" nd-cmt"><b>@comment.ten</b><p class="noi-dung-comment">@comment.nd</p></div>
+                                
+                            </div>
+                        }
+                    </div>
+                    @*<div class="comment-section">
+                        <div class="a-comment">
+                            <p><b>Dương Minh Chiến</b></p>
+                            <p>Bài viết câu like quá tệ.</p>
+                            <a href="#"> Trả lời</a>
+                        </div>
+                        <div class="a-child-comment">
+                            <p><b>Dương Văn Huân</b></p>
+                            <p>Bình luận hay quá</p>
+                        </div>
+                        <div class="a-comment">
+                            <p><b>Nguyễn Tá Anh</b></p>
+                            <p>Bài viết hay quá, cảm ơn chị ạ.</p>
+                            <a href="#"> Trả lời</a>
+
+                        </div>*@
+
+                </div>
+            }
+        </div>
+        <div class="group-in-right">
+            <div class="avatar">
+                @using (Html.BeginForm("uploadavatar", "home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                {
+
+                    <input type="file" id="imgupload" name="avatarUpload" style="display:none" />
+                    <input type="submit" name="name" style="display:none" id="submit_avatar" value="" />
+                }
+
+                <img id="upload_avatar_img" src="~/asset/images/avatar/@ViewBag.user.anh" alt="Ảnh đại diện" />
+            </div>
+            <div class="description">
+                <p style="text-align: center;"><b>@ViewBag.user.ho_ten</b></p>
+                <p>Chức vụ: @ViewBag.user.role</p>
+                <p>Lớp: @ViewBag.user.ma_lop</p>
+                <p>Quê quán: @ViewBag.user.dia_chi</p>
+                <p>Giới tính: @(ViewBag.user.gioi_tinh?  "nam": "nu")</p>
+                <p>Email: @ViewBag.user.email</p>
+                <span><a href="/home/logout"><i class="bi bi-box-arrow-right">Đăng xuất</i></a></span><button class="btn btn-warning" id="change_pass">Đổi mật khẩu</button>
+            </div>
+        </div>
+
     </div>
-    <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
-    </div>
+
 </div>
+<div id="dialog">
+
+    <input class="form-control" type="password" name="old_pass" id="old_pass" placeholder="mật khẩu cũ" />
+    <input class="form-control" type="password" name="new_pass" id="new_pass" placeholder="mật khẩu mới" />
+    <input class="form-control" type="password" name="retype_new_pass" id="retype_new_pass" placeholder="nhập lại mật khẩu mới" />
+    <input type="button" class="btn btn-warning" name="name" id="btn_change_pass" value="Đổi mật khẩu" />
+
+</div>
+@section Styles {
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
+
+    <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/sweetalert2@10.10.1/dist/sweetalert2.min.css'>
+}
+<script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.10.1/dist/sweetalert2.all.min.js"></script>
+<script src="~/asset/js/main.js"></script>
