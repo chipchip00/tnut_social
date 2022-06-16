@@ -35,7 +35,8 @@ namespace WebApplication1.Controllers
             Session["default_reciver"] = id_nguoi_nhan;
             var chat_db = db.chat.Where(dt => (dt.uid == username && dt.nguoi_nhan== id_nguoi_nhan)||(dt.uid == id_nguoi_nhan && dt.nguoi_nhan == username)).ToList();
             var recievers = db_nguoi_nhan.ToList();
-            ViewBag.nguoi_nhan = recievers.Where(user => user.uid == id_nguoi_nhan).FirstOrDefault();
+            if (recievers == null) recievers = db.user.Where(dt => dt.uid == id_nguoi_nhan).ToList();
+            ViewBag.nguoi_nhan = db.user.Where(user => user.uid == id_nguoi_nhan).FirstOrDefault();
             ViewBag.list_nguoi_nhan = recievers;
             ViewBag.nd_chat = chat_db;
             return View(db);

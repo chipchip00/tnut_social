@@ -230,3 +230,25 @@
 .noi-dung-comment{
    
 }
+.approve-post{
+    background-color:green;
+
+}
+.approve-post, .remove-post {
+    text-align: center;
+    font-size: 18px;
+    border-radius: 15px;
+    color: white;
+    margin: 5px 10px;
+    padding:5px;
+}
+    .approve-post, .remove-post:hover{
+        cursor:pointer;
+        
+    }
+    .remove-post {
+        background-color: red;
+    }
+.text-gioi-thieu{
+    width:100%;
+}

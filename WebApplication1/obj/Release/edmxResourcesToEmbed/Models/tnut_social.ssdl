@@ -146,6 +146,7 @@
     <Property Name="role" Type="nvarchar" MaxLength="10" />
     <Property Name="anh" Type="nvarchar" MaxLength="50" />
     <Property Name="gioi_tinh" Type="bit" />
+    <Property Name="gioi_thieu" Type="nvarchar(max)" />
   </EntityType>
   <EntityType Name="user_group">
     <Key>

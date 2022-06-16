@@ -81,6 +81,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
@@ -235,9 +236,12 @@
     <Content Include="asset\images\post\img3.jpg" />
     <Content Include="asset\js\Chat.js" />
     <Content Include="asset\js\Chat_jquery.js" />
+    <Content Include="asset\js\group.js" />
+    <Content Include="asset\js\homepage.js" />
     <Content Include="asset\js\main.js" />
     <Content Include="asset\login.css" />
     <Content Include="asset\main.css" />
+    <Content Include="asset\style.css" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
@@ -295,10 +299,12 @@
     <Content Include="Views\Group\Index.cshtml" />
     <Content Include="Views\Group\ChiTiet.cshtml" />
     <Content Include="Views\Login\forgot.cshtml" />
+    <Content Include="Views\Profile\Index.cshtml" />
+    <Content Include="Views\Group\KiemDuyet.cshtml" />
+    <Content Include="Views\Profile\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Profile\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

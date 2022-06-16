@@ -68,3 +68,7 @@ D:\chat-realtime-test\WebApplication1\WebApplication1\obj\Release\TNUT_Social.cs
 D:\chat-realtime-test\WebApplication1\WebApplication1\obj\Release\TNUT_Social.csproj.CoreCompileInputs.cache
 D:\chat-realtime-test\WebApplication1\WebApplication1\obj\Release\WebApplication1.dll
 D:\chat-realtime-test\WebApplication1\WebApplication1\obj\Release\WebApplication1.pdb
+D:\chat-realtime-test\WebApplication1\WebApplication1\bin\System.Web.Http.dll
+D:\chat-realtime-test\WebApplication1\WebApplication1\bin\System.Net.Http.Formatting.dll
+D:\chat-realtime-test\WebApplication1\WebApplication1\bin\System.Web.Http.xml
+D:\chat-realtime-test\WebApplication1\WebApplication1\bin\System.Net.Http.Formatting.xml

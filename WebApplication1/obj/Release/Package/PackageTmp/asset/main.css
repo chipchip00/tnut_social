@@ -9,7 +9,7 @@
     position: -webkit-sticky; /* Safari */
     position: sticky;
     top: 2px;
-    max-height: 550px;
+    max-height: 600px;
     width: 30%;
     margin-left: 10px;
     margin-top: 2px;
@@ -45,6 +45,9 @@
     width: 100%;
     border-radius: 50%;
     padding: 10px 20%;
+    max-height: 250px;
+    min-height:200px;
+
 }
 
 .description {
@@ -85,7 +88,7 @@
     background-size: auto;
     width: fit-content;
     margin: 5px;
-    padding: 10px;
+    
 }
 
 .a-child-comment {
@@ -106,6 +109,7 @@
 }
 .comment-section {
     display:none;
+    margin-left:8%;
 }
 .group1 img {
     max-width: 95%;
@@ -164,3 +168,84 @@
     padding:5px;
     border-radius:50%;
 }
+.img-avatar-comment img {
+    width: 50px;
+    height: 50px;
+    padding: 5px;
+    border-radius: 50%;
+}
+.img-avatar-comment{
+    width:70px;
+    height:100%;
+}
+.nd-cmt, .img-avatar-comment {
+    display: inline-block;
+    vertical-align: top
+}
+    .nd-cmt{
+        max-width:80%;
+    }
+    #upload_avatar_img:hover {
+        cursor: pointer;
+    }
+#change_pass {
+    margin:5px;
+    border-radius:10px;
+   
+}
+#dialog input{
+    margin:10px;
+    max-width:90%;
+}
+#dialog{
+    display:none;
+}
+.forgot-form input {
+    max-width: 350px;
+    margin: 10px 0px;
+}
+.forgot-form{
+    margin: 15px;
+}
+.text-danger {
+    color:red;
+}
+.same-line{
+    display: inline-block;
+
+}
+#email-error{
+    margin-left:20px;
+}
+.like-button {
+    color:red;
+}
+.like-button:hover {
+    cursor: pointer;
+}
+.input-comment{
+    border:1px solid blue;
+    border-radius:15px 5px 5px 15px;
+}
+.noi-dung-comment{
+   
+}
+.approve-post{
+    background-color:green;
+
+}
+.approve-post, .remove-post {
+    text-align: center;
+    font-size: 18px;
+    border-radius: 15px;
+    color: white;
+    margin: 5px 10px;
+    padding:5px;
+}
+    .approve-post, .remove-post:hover{
+        cursor:pointer;
+        
+    }
+    .remove-post {
+        background-color: red;
+    }

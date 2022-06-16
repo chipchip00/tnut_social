@@ -162,7 +162,7 @@
       <PropertyRef Name="uid" />
     </Key>
     <Property Name="uid" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
-    <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="password" Type="String" MaxLength="50" />
     <Property Name="ho_ten" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="dia_chi" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
@@ -176,6 +176,7 @@
     <NavigationProperty Name="lop" Relationship="Self.FK_user_lop" FromRole="user" ToRole="lop" />
     <NavigationProperty Name="tai_lieu" Relationship="Self.FK_tai_lieu_user" FromRole="user" ToRole="tai_lieu" />
     <NavigationProperty Name="user_group" Relationship="Self.FK_user_group_user1" FromRole="user" ToRole="user_group" />
+    <Property Name="gioi_thieu" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
   </EntityType>
   <EntityType Name="user_group">
     <Key>

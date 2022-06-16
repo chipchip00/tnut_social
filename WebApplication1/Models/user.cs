@@ -28,14 +28,14 @@ namespace WebApplication1.Models
         public string uid { get; set; }
         public string password { get; set; }
         public string ho_ten { get; set; }
-        [Required(ErrorMessage = "Trường email không được trống!")]
-        [EmailAddress(ErrorMessage = "Địa chỉ email không hợp lệ")]
         public string email { get; set; }
+        [Required(ErrorMessage = "Trường địa chỉ không được để trống!")]
         public string dia_chi { get; set; }
         public string ma_lop { get; set; }
         public string role { get; set; }
         public string anh { get; set; }
         public Nullable<bool> gioi_tinh { get; set; }
+        public string gioi_thieu { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<comment> comment { get; set; }

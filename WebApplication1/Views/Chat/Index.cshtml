@@ -71,25 +71,29 @@
                         </div>
                         <div class="chat-history">
                             <ul class="m-b-0" id="discussion">
-                                @foreach (var message in ViewBag.nd_chat)
+                                @if (ViewBag.nd_chat != null)
                                 {
-                                    string class_time = "message-data text-right";
-                                    string class_message = "message other-message float-right";
-
-                                    if (Session["username"].ToString().ToLower() != message.uid.ToLower())
+                                    foreach (var message in ViewBag.nd_chat)
                                     {
-                                        class_time = "message-data";
-                                        class_message = "message my-message";
+                                        string class_time = "message-data text-right";
+                                        string class_message = "message other-message float-right";
+
+                                        if (Session["username"].ToString().ToLower() != message.uid.ToLower())
+                                        {
+                                            class_time = "message-data";
+                                            class_message = "message my-message";
+                                        }
+
+                                        <li class="clearfix">
+                                            <div class="@class_time">
+                                                <span class="message-data-time">@message.time</span>
+                                            </div>
+                                            <div class="@class_message"> @message.noi_dung </div>
+                                        </li>
+
                                     }
-
-                                    <li class="clearfix">
-                                        <div class="@class_time">
-                                            <span class="message-data-time">@message.time</span>
-                                        </div>
-                                        <div class="@class_message"> @message.noi_dung </div>
-                                    </li>
-
                                 }
+
                             </ul>
                         </div>
                         <div class="chat-message clearfix">

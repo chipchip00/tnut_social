@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
@@ -21,7 +22,8 @@ namespace WebApplication1.Controllers
         public ActionResult Index(string username, string password )
         {
             tnut_socialEntities db = new tnut_socialEntities();
-            var data = db.user.Where(user => user.uid == username && user.password == password);
+
+            var data = db.user.Where(user => user.uid == username && (user.password == password));
             
             int numberOfData = data.Count();
             if (numberOfData > 0)
@@ -71,6 +73,7 @@ namespace WebApplication1.Controllers
             if (domain != "tnut.edu.vn") RedirectToAction("forgot");
             tnut_socialEntities db = new tnut_socialEntities();
             var uInfo = db.user.Where(user => user.uid == username).FirstOrDefault();
+
             uInfo.password = new_pass;
             
             

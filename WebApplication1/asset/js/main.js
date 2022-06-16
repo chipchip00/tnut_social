@@ -1,7 +1,36 @@
 ﻿//const { json } = require("modernizr");
 
 $(document).ready(function () {
-    $(".send-comment").click(function () {
+
+    //window.scrollTo(0, 0);
+
+    $(document).on('click', '.show_comment', function () {
+        var id_post = $(this).attr("id").split("-")[2];
+        $("#comment-section-" + id_post).css("display", "block");
+    });
+    function duyetPost(action, id_post) {
+        $.post(
+            "DuyetPost",
+            {
+                action: action,
+                id_post: id_post
+            },
+
+            function (data) {
+                if (data == "1") {
+                    $("#post-" + id_post).remove();
+                }
+        });
+    }
+    $(".duyet-post").click(function () {
+        var id = $(this).attr("id").split("-");
+        var id_post = id[2];
+        var action = id[0];
+        duyetPost(action, id_post);
+    });
+  
+       
+     $(document).on('click', '.send-comment',function () {
         var id_post = $(this).attr("id").split("-")[2];
         var nd_comment = $("#input-comment-" + id_post).val();
         $.post("Home/AddComment",
@@ -39,7 +68,7 @@ $(document).ready(function () {
             $("#send-comment-" + id_post).click();
         }
     });
-    $(".like-button").click(function () {
+    $(document).on('click', '.like-button',function () {
         var id_post = $(this).attr("id").split("-")[2];
         $.post("/home/updatelike",
             {
@@ -65,10 +94,8 @@ $(document).ready(function () {
             });
 
     });
-    $(".show_comment").click(function () {
-        var id_post = $(this).attr("id").split("-")[2];
-        $("#comment-section-" + id_post).css("display", "block");
-    });
+    //$(document).on('click', '.show-comment', function () {
+
     $("#upload_avatar_img").click(function () {
 
         $('#imgupload').trigger('click');

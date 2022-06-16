@@ -14,7 +14,7 @@
                 <div class="a-post">
                     <div class="user-group">
 
-                        <b><span class="img-avatar"><img src="~/asset/images/avatar/@post.avatar" /></span><span>@post.nguoi_dang >></span><span><a href="/group/chitiet?ma_nhom=@post.ma_nhom"> @post.ten_nhom</a></span></b>
+                        <b><a href="/profile?id=@post.id"><span class="img-avatar"><img src="~/asset/images/avatar/@post.avatar" /></span></a><span>@post.nguoi_dang >></span><span><a href="/group/chitiet?ma_nhom=@post.ma_nhom"> @post.ten_nhom</a></span></b>
                     </div>
                     <div class="text-post">
                         @post.nd
@@ -41,7 +41,7 @@
                         @foreach (var comment in post.cmt)
                         {
                             <div class="a-comment">
-                                <div class="img-avatar-comment "><img src="~/asset/images/avatar/@comment.avatar" /></div>
+                                <div class="img-avatar-comment "><a href="/profile?id=@comment.uid"><img src="~/asset/images/avatar/@comment.avatar" /></a></div>
                                 <div class=" nd-cmt"><b>@comment.ten</b><p class="noi-dung-comment">@comment.nd</p></div>
                                 
                             </div>
@@ -88,7 +88,7 @@
                 <span><a href="/home/logout"><i class="bi bi-box-arrow-right">Đăng xuất</i></a></span><button class="btn btn-warning" id="change_pass">Đổi mật khẩu</button>
             </div>
         </div>
-
+        <p id="message-post" style="text-align:center;"></p>
     </div>
 
 </div>
@@ -108,3 +108,4 @@
 <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.10.1/dist/sweetalert2.all.min.js"></script>
 <script src="~/asset/js/main.js"></script>
+<script src="~/asset/js/homepage.js"></script>
