@@ -23,6 +23,7 @@ namespace WebApplication1.Models
         public int ma_nhom { get; set; }
         public string ten_nhom { get; set; }
         public string mo_ta { get; set; }
+        public string anh { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<user_group> user_group { get; set; }

@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="tnut_socialModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="tnut_socialModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="account">
           <Key>
             <PropertyRef Name="username" />
@@ -28,6 +28,16 @@
           <Property Name="id_category" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="name" Type="nvarchar" MaxLength="100" />
         </EntityType>
+        <EntityType Name="chat">
+          <Key>
+            <PropertyRef Name="id_chat" />
+          </Key>
+          <Property Name="id_chat" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="noi_dung" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="uid" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="nguoi_nhan" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="time" Type="datetime" Nullable="false" />
+        </EntityType>
         <EntityType Name="comment">
           <Key>
             <PropertyRef Name="id_comment" />
@@ -39,16 +49,6 @@
           <Property Name="noi_dung" Type="nvarchar" MaxLength="500" />
           <Property Name="id_parent" Type="int" />
         </EntityType>
-        <EntityType Name="chat">
-          <Key>
-            <PropertyRef Name="id_chat" />
-          </Key>
-          <Property Name="id_chat" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="noi_dung" Type="nvarchar(max)" />
-          <Property Name="uid" Type="nvarchar" MaxLength="20" />
-          <Property Name="nguoi_nhan" Type="nvarchar" MaxLength="20" />
-          <Property Name="time" Type="datetime" />
-        </EntityType>
         <EntityType Name="group">
           <Key>
             <PropertyRef Name="ma_nhom" />
@@ -56,6 +56,7 @@
           <Property Name="ma_nhom" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ten_nhom" Type="nvarchar" MaxLength="100" />
           <Property Name="mo_ta" Type="nvarchar" MaxLength="500" />
+          <Property Name="anh" Type="nvarchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="khoa">
           <Key>
@@ -150,6 +151,7 @@
           <Property Name="role" Type="nvarchar" MaxLength="10" />
           <Property Name="anh" Type="nvarchar" MaxLength="50" />
           <Property Name="gioi_tinh" Type="bit" />
+          <Property Name="gioi_thieu" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="user_group">
           <Key>
@@ -161,7 +163,9 @@
           <Property Name="id_role" Type="int" />
         </EntityType>
         <Association Name="FK_anh_post">
-          <End Role="post" Type="Self.post" Multiplicity="0..1" />
+          <End Role="post" Type="Self.post" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="anh" Type="Self.anh" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="post">
@@ -169,6 +173,18 @@
             </Principal>
             <Dependent Role="anh">
               <PropertyRef Name="id_post" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_chat_user1">
+          <End Role="user" Type="Self.user" Multiplicity="1" />
+          <End Role="chat" Type="Self.chat" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="uid" />
+            </Principal>
+            <Dependent Role="chat">
+              <PropertyRef Name="uid" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -185,7 +201,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_comment_post">
-          <End Role="post" Type="Self.post" Multiplicity="1" />
+          <End Role="post" Type="Self.post" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="comment" Type="Self.comment" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="post">
@@ -208,20 +226,10 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_chat_user1">
-          <End Role="user" Type="Self.user" Multiplicity="0..1" />
-          <End Role="chat" Type="Self.chat" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="user">
-              <PropertyRef Name="uid" />
-            </Principal>
-            <Dependent Role="chat">
-              <PropertyRef Name="uid" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_like_post">
-          <End Role="post" Type="Self.post" Multiplicity="1" />
+          <End Role="post" Type="Self.post" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="like" Type="Self.like" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="post">
@@ -366,43 +374,12 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
-        <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-          <Parameter Name="owner_id" Type="int" Mode="In" />
-          <Parameter Name="version" Type="int" Mode="In" />
-          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
-        </Function>
-        <Function Name="sp_creatediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-          <Parameter Name="owner_id" Type="int" Mode="In" />
-          <Parameter Name="version" Type="int" Mode="In" />
-          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
-        </Function>
-        <Function Name="sp_dropdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-          <Parameter Name="owner_id" Type="int" Mode="In" />
-        </Function>
-        <Function Name="sp_helpdiagramdefinition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-          <Parameter Name="owner_id" Type="int" Mode="In" />
-        </Function>
-        <Function Name="sp_helpdiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-          <Parameter Name="owner_id" Type="int" Mode="In" />
-        </Function>
-        <Function Name="sp_renamediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-          <Parameter Name="owner_id" Type="int" Mode="In" />
-          <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
-        </Function>
-        <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <EntityContainer Name="tnut_socialModelStoreContainer">
           <EntitySet Name="account" EntityType="Self.account" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="anh" EntityType="Self.anh" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="category" EntityType="Self.category" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="comment" EntityType="Self.comment" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="chat" EntityType="Self.chat" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="comment" EntityType="Self.comment" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="group" EntityType="Self.group" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="khoa" EntityType="Self.khoa" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="like" EntityType="Self.like" Schema="dbo" store:Type="Tables" />
@@ -419,6 +396,10 @@
             <End Role="post" EntitySet="post" />
             <End Role="anh" EntitySet="anh" />
           </AssociationSet>
+          <AssociationSet Name="FK_chat_user1" Association="Self.FK_chat_user1">
+            <End Role="user" EntitySet="user" />
+            <End Role="chat" EntitySet="chat" />
+          </AssociationSet>
           <AssociationSet Name="FK_comment_comment" Association="Self.FK_comment_comment">
             <End Role="comment" EntitySet="comment" />
             <End Role="comment1" EntitySet="comment" />
@@ -430,10 +411,6 @@
           <AssociationSet Name="FK_comment_user" Association="Self.FK_comment_user">
             <End Role="user" EntitySet="user" />
             <End Role="comment" EntitySet="comment" />
-          </AssociationSet>
-          <AssociationSet Name="FK_chat_user1" Association="Self.FK_chat_user1">
-            <End Role="user" EntitySet="user" />
-            <End Role="chat" EntitySet="chat" />
           </AssociationSet>
           <AssociationSet Name="FK_like_post" Association="Self.FK_like_post">
             <End Role="post" EntitySet="post" />
@@ -484,8 +461,7 @@
             <End Role="user" EntitySet="user" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="tnut_socialModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -534,10 +510,10 @@
             <PropertyRef Name="id_chat" />
           </Key>
           <Property Name="id_chat" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="noi_dung" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="uid" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="nguoi_nhan" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="time" Type="DateTime" Precision="3" />
+          <Property Name="noi_dung" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="uid" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="nguoi_nhan" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="time" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="user" Relationship="Self.FK_chat_user1" FromRole="chat" ToRole="user" />
         </EntityType>
         <EntityType Name="group">
@@ -547,6 +523,7 @@
           <Property Name="ma_nhom" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ten_nhom" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="mo_ta" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="anh" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="user_group" Relationship="Self.FK_user_group_group1" FromRole="group" ToRole="user_group" />
         </EntityType>
         <EntityType Name="khoa">
@@ -650,7 +627,7 @@
             <PropertyRef Name="uid" />
           </Key>
           <Property Name="uid" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="password" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
           <Property Name="ho_ten" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="dia_chi" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
@@ -664,6 +641,7 @@
           <NavigationProperty Name="lop" Relationship="Self.FK_user_lop" FromRole="user" ToRole="lop" />
           <NavigationProperty Name="tai_lieu" Relationship="Self.FK_tai_lieu_user" FromRole="user" ToRole="tai_lieu" />
           <NavigationProperty Name="user_group" Relationship="Self.FK_user_group_user1" FromRole="user" ToRole="user_group" />
+          <Property Name="gioi_thieu" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="user_group">
           <Key>
@@ -679,7 +657,9 @@
           <NavigationProperty Name="user" Relationship="Self.FK_user_group_user1" FromRole="user_group" ToRole="user" />
         </EntityType>
         <Association Name="FK_anh_post">
-          <End Role="post" Type="Self.post" Multiplicity="0..1" />
+          <End Role="post" Type="Self.post" Multiplicity="0..1" >
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="anh" Type="Self.anh" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="post">
@@ -715,7 +695,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_comment_post">
-          <End Role="post" Type="Self.post" Multiplicity="1" />
+          <End Role="post" Type="Self.post" Multiplicity="1" >
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="comment" Type="Self.comment" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="post">
@@ -739,7 +721,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_chat_user1">
-          <End Role="user" Type="Self.user" Multiplicity="0..1" />
+          <End Role="user" Type="Self.user" Multiplicity="1" />
           <End Role="chat" Type="Self.chat" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="user">
@@ -775,7 +757,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_like_post">
-          <End Role="post" Type="Self.post" Multiplicity="1" />
+          <End Role="post" Type="Self.post" Multiplicity="1" >
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="like" Type="Self.like" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="post">
@@ -835,7 +819,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_post_user_group">
-          <End Role="user_group" Type="Self.user_group" Multiplicity="0..1" />
+          <End Role="user_group" Type="Self.user_group" Multiplicity="0..1" >
+          </End>
           <End Role="post" Type="Self.post" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="user_group">
@@ -970,48 +955,7 @@
             <End Role="user" EntitySet="user" />
             <End Role="user_group" EntitySet="user_group" />
           </AssociationSet>
-          <FunctionImport Name="sp_alterdiagram">
-            <Parameter Name="diagramname" Mode="In" Type="String" />
-            <Parameter Name="owner_id" Mode="In" Type="Int32" />
-            <Parameter Name="version" Mode="In" Type="Int32" />
-            <Parameter Name="definition" Mode="In" Type="Binary" />
-          </FunctionImport>
-          <FunctionImport Name="sp_creatediagram">
-            <Parameter Name="diagramname" Mode="In" Type="String" />
-            <Parameter Name="owner_id" Mode="In" Type="Int32" />
-            <Parameter Name="version" Mode="In" Type="Int32" />
-            <Parameter Name="definition" Mode="In" Type="Binary" />
-          </FunctionImport>
-          <FunctionImport Name="sp_dropdiagram">
-            <Parameter Name="diagramname" Mode="In" Type="String" />
-            <Parameter Name="owner_id" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(tnut_socialModel.sp_helpdiagramdefinition_Result)">
-            <Parameter Name="diagramname" Mode="In" Type="String" />
-            <Parameter Name="owner_id" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(tnut_socialModel.sp_helpdiagrams_Result)">
-            <Parameter Name="diagramname" Mode="In" Type="String" />
-            <Parameter Name="owner_id" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="sp_renamediagram">
-            <Parameter Name="diagramname" Mode="In" Type="String" />
-            <Parameter Name="owner_id" Mode="In" Type="Int32" />
-            <Parameter Name="new_diagramname" Mode="In" Type="String" />
-          </FunctionImport>
-          <FunctionImport Name="sp_upgraddiagrams" />
         </EntityContainer>
-        <ComplexType Name="sp_helpdiagramdefinition_Result">
-          <Property Type="Int32" Name="version" Nullable="true" />
-          <Property Type="Binary" Name="definition" Nullable="true" />
-        </ComplexType>
-        <ComplexType Name="sp_helpdiagrams_Result">
-          <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
-          <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
-          <Property Type="Int32" Name="ID" Nullable="false" />
-          <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
-          <Property Type="Int32" Name="OwnerID" Nullable="false" />
-        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1073,6 +1017,7 @@
                 <ScalarProperty Name="ma_nhom" ColumnName="ma_nhom" />
                 <ScalarProperty Name="ten_nhom" ColumnName="ten_nhom" />
                 <ScalarProperty Name="mo_ta" ColumnName="mo_ta" />
+                <ScalarProperty Name="anh" ColumnName="anh" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1167,6 +1112,7 @@
           <EntitySetMapping Name="user">
             <EntityTypeMapping TypeName="tnut_socialModel.user">
               <MappingFragment StoreEntitySet="user">
+                <ScalarProperty Name="gioi_thieu" ColumnName="gioi_thieu" />
                 <ScalarProperty Name="uid" ColumnName="uid" />
                 <ScalarProperty Name="password" ColumnName="password" />
                 <ScalarProperty Name="ho_ten" ColumnName="ho_ten" />
@@ -1188,30 +1134,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="sp_alterdiagram" FunctionName="tnut_socialModel.Store.sp_alterdiagram" />
-          <FunctionImportMapping FunctionImportName="sp_creatediagram" FunctionName="tnut_socialModel.Store.sp_creatediagram" />
-          <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="tnut_socialModel.Store.sp_dropdiagram" />
-          <FunctionImportMapping FunctionImportName="sp_helpdiagramdefinition" FunctionName="tnut_socialModel.Store.sp_helpdiagramdefinition">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="tnut_socialModel.sp_helpdiagramdefinition_Result">
-                <ScalarProperty Name="version" ColumnName="version" />
-                <ScalarProperty Name="definition" ColumnName="definition" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="sp_helpdiagrams" FunctionName="tnut_socialModel.Store.sp_helpdiagrams">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="tnut_socialModel.sp_helpdiagrams_Result">
-                <ScalarProperty Name="Database" ColumnName="Database" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="Owner" ColumnName="Owner" />
-                <ScalarProperty Name="OwnerID" ColumnName="OwnerID" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="tnut_socialModel.Store.sp_renamediagram" />
-          <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="tnut_socialModel.Store.sp_upgraddiagrams" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

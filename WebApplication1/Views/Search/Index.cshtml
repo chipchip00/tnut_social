@@ -1,0 +1,70 @@
+﻿@model IEnumerable<WebApplication1.Models.UserInfo>
+@{
+    ViewBag.Title = "Tìm kiếm sinh viên";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container filter-section">
+    <div class="row">
+        <div class="col-md-6 left-filter-section">
+            <label>Khoa</label>
+            <select class="filter" id="khoa">
+                <option value="all">Tất cả</option>
+                @foreach (var khoa in ViewBag.dt_khoa)
+                {
+                    <option value="@khoa.ma_khoa">@khoa.ten_khoa</option>
+                }
+            </select>
+            <label>Ngành</label>
+            <select class="filter" id="nganh">
+                <option value="all">Tất cả</option>
+                @foreach (var nganh in ViewBag.dt_nganh)
+                {
+                    <option value="@nganh.ma_nganh">@nganh.ten_nganh</option>
+                }
+            </select>
+            <label>Lớp</label>
+            <select class="filter" id="lop">
+                <option value="all">Tất cả</option>
+                @foreach (var lop in ViewBag.dt_lop)
+                {
+                    <option value="@lop.ma_lop">@lop.ten_lop</option>
+                }
+            </select>
+
+        </div>
+        <div class="col-md-6 right-filter-section">
+            <label>Giới tính</label>
+            <select class="filter" id="gender">
+                <option value="1">Nam</option>
+                <option value="0">Nữ</option>
+            </select>
+            <label>Chức vụ</label>
+            <select class="filter" id="role">
+                <option value="Sinh viên">Sinh viên</option>
+                <option value="Giáo viên">Giáo viên</option>
+            </select>
+        </div>
+    </div>
+</div>
+<div class="container users-section">
+    <div class="row" id="sub-user-section">
+        @foreach (var user in Model)
+        {
+            <div class="col-md-6">
+                <div class="a-user">
+
+                    <span><img src="~/asset/images/avatar/@user.anh" style="width:70px; height:70px" /></span>
+
+                    <span><a href="profile?id=@user.uid">@user.ho_ten</a></span>
+                    <div class="mo-ta-ngan">
+                        @user.role @user.maLop ngành @user.tenNganh khoa @user.tenKhoa.
+                    </div>
+                </div>
+            </div>
+        }
+
+    </div>
+    
+</div>
+<script src="~/asset/js/Search.js"></script>

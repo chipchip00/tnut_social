@@ -1,0 +1,19 @@
+﻿@model IEnumerable<WebApplication1.Models.mon_hoc>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <h2>Tài liệu theo môn học</h2>
+    <div class="row">
+        @foreach (var monhoc in Model)
+        {
+            <div class="col-md-6"><a href="/tailieu/chitiet?mmh=@monhoc.ma_mon_hoc">@monhoc.ten_mon_hoc</a></div>
+
+        }
+
+
+    </div>
+</div>
+

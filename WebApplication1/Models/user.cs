@@ -33,6 +33,7 @@ namespace WebApplication1.Models
         public string role { get; set; }
         public string anh { get; set; }
         public Nullable<bool> gioi_tinh { get; set; }
+        public string gioi_thieu { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<comment> comment { get; set; }

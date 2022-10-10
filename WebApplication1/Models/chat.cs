@@ -18,7 +18,7 @@ namespace WebApplication1.Models
         public string noi_dung { get; set; }
         public string uid { get; set; }
         public string nguoi_nhan { get; set; }
-        public Nullable<System.DateTime> time { get; set; }
+        public System.DateTime time { get; set; }
     
         public virtual user user { get; set; }
     }

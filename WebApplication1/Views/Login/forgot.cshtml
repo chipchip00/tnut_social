@@ -1,0 +1,34 @@
+﻿@model WebApplication1.Models.user
+@{
+    ViewBag.Title = "Quên mật khẩu";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+
+}
+<div class="container forgot-form">
+    @if (TempData["Error"] != null) {
+    <span class="text-danger">@TempData["Error"]</span>
+    }
+
+    @using (Html.BeginForm("SendEmail", "login"))
+    {
+        @Html.AntiForgeryToken()
+        <h4>Nhập địa chỉ Email của bạn</h4>
+        @Html.ValidationMessageFor(model => model.email, "", new { @class = "text-danger" })
+
+        @Html.EditorFor(model => model.email, new
+   {
+       htmlAttributes = new { 
+           @class = "form-control",
+           placeholder="masinhvien@tnut.edu.vn"
+       },
+   }
+        )
+
+        <input type="submit" value="Lấy mật khẩu" class="btn btn-info"/>
+    }
+
+</div>
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/jqueryval")
+
