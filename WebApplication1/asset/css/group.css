@@ -1,0 +1,18 @@
+﻿.main-post {
+    width: 100%;
+    margin-left: 0;
+}
+.list-user-group{
+    display: block;
+    height:500px;
+}
+.fixed-postion{
+    position: fixed;
+    top: 10px;
+    right: 34px;
+}
+@media only screen and (max-width: 992px) {
+    .fixed-postion{
+        display:none;
+    }
+}

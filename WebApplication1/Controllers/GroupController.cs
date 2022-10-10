@@ -69,7 +69,17 @@ namespace WebApplication1.Controllers
             //Session["last_idpost_group"] = posts.LastOrDefault().id_post;
             foreach (var post in posts)
             {
-
+                var timeSpan = DateTime.Now - post.time;
+                post.timeSpan = (
+                    (timeSpan).Days > 0 ?
+                    (timeSpan).Days.ToString() + " ngày trước"
+                    : (
+                        (timeSpan).Hours.ToString()
+                        + " giờ "
+                        + (timeSpan).Minutes.ToString()
+                        + " phút trước."
+                    )
+                 );
                 string a = post.nd;
                 //post.cmt = db.comment.Where(cmt => cmt.id_post == post.id_post);
                 post.cmt = from cmt in db.comment
@@ -101,11 +111,21 @@ namespace WebApplication1.Controllers
         }
 
         [HttpPost]
+        [ValidateInput(false)]
         public ActionResult AddPost(HttpPostedFileBase[] uploadFile, string noi_dung_post, int get_id_nhom)
         {
+            
+            if(uploadFile.Length== 0 && noi_dung_post == "")
+            {
+                TempData["publish_post_result"] = "Lỗi: Nội dung trống.";
+                return RedirectToAction("ChiTiet", new { ma_nhom = get_id_nhom });
+            }
             string username = Session["username"].ToString();
             tnut_socialEntities db = new tnut_socialEntities();
-            var roleInGroup = db.user_group.Where(dt => dt.uid == username && dt.ma_nhom == get_id_nhom).FirstOrDefault().id_role;
+            var roleInGroup = db.user_group.Where(
+                dt => dt.uid == username 
+                && dt.ma_nhom == get_id_nhom
+                ).FirstOrDefault().id_role;
             bool status = false;
             if (roleInGroup == 1) status = true;
             var new_post = new post
@@ -119,10 +139,13 @@ namespace WebApplication1.Controllers
             };
             db.post.Add(new_post);
             db.SaveChanges();
-            if (ModelState.IsValid)
+            int abc = uploadFile.Length;
+            int def = uploadFile.Count();
+            string text = uploadFile[0].FileName;
+            if (ModelState.IsValid && uploadFile.Length > 0)
             {   //iterating through multiple file collection   
                 foreach (HttpPostedFileBase file in uploadFile)
-                {
+                    {
                     //Checking file is available to save.  
                     if (file != null && file.ContentLength > 0)
                     {
@@ -138,24 +161,31 @@ namespace WebApplication1.Controllers
                             };
                             dt.anh.Add(new_anh);
                             dt.SaveChanges();
-                            string path = Path.Combine(Server.MapPath("~/asset/images/post"),
+                            var filePath = Server.MapPath(string.Format("~/asset/images/post/{0}", new_post.id_post));
+                            bool isExistsPath = System.IO.Directory.Exists(filePath);
+
+                            if (!isExistsPath)
+                                System.IO.Directory.CreateDirectory(filePath);
+                            string path = Path.Combine(filePath,
                                                        Path.GetFileName(file.FileName));
 
                             file.SaveAs(path);
-                            ViewBag.Message = "File uploaded successfully";
-                           
                         }
                         catch (Exception ex)
                         {
-                            ViewBag.Message = "ERROR:" + ex.Message.ToString();
+                            TempData["publish_post_result"] = "Lỗi:" + ex.Message.ToString();
+                            return RedirectToAction("ChiTiet", new { ma_nhom = get_id_nhom });
                         }
                     }
                     else
                     {
-                        ViewBag.Message = "You have not specified a file.";
+                        TempData["publish_post_result"] = "File upload không hợp lệ!";
+                        return RedirectToAction("ChiTiet", new { ma_nhom = get_id_nhom });
                     }
                 }
-                
+                TempData["publish_post_result"] = "ok";
+                db.SaveChanges();
+
             }
             return RedirectToAction("ChiTiet", new { ma_nhom = get_id_nhom });
         }
@@ -168,15 +198,11 @@ namespace WebApplication1.Controllers
             if (ma_nhom == null) return RedirectToAction("Index");
             var roleInGroup = db.user_group.Where(ug => ug.uid == username && ug.ma_nhom == ma_nhom).First().id_role;
             if (roleInGroup != 1) return RedirectToAction("Index");
-            //ViewBag.nhom = db.group.Where(dt => dt.ma_nhom == ma_nhom).FirstOrDefault();
             
             var baiVietCho = db.post.Where(post => post.ma_nhom == ma_nhom && post.status == false);
             var ds_post = from dt_post in db.post
                           join dt_user in db.user on dt_post.uid equals dt_user.uid
                           join dt_group in db.@group on dt_post.ma_nhom equals dt_group.ma_nhom
-                          //join dt_like in db.like on dt_post.id_post equals dt_like.id_post
-                          //join dt_comment in db.comment on dt_post.id_post equals dt_comment.id_post
-                          //join dt_image in db.anh on dt_post.id_post equals dt_image.id_post
                           where (dt_post.ma_nhom == ma_nhom && dt_post.status == false)
                           select new BaiViet
                           {
@@ -188,14 +214,22 @@ namespace WebApplication1.Controllers
                               time = (DateTime)dt_post.ngay_dang,
                               avatar = dt_user.anh,
                               ma_nhom = (int)dt_post.ma_nhom
-                              //cmt = dt_comment,
-                              //img = dt_image,
-                              //like = dt_like
                           };
 
             var posts = ds_post.ToList();
             foreach (var post in posts)
             {
+                var timeSpan = DateTime.Now - post.time;
+                post.timeSpan = (
+                    (timeSpan).Days > 0 ?
+                    (timeSpan).Days.ToString() + " ngày trước"
+                    : (
+                        (timeSpan).Hours.ToString()
+                        + " giờ "
+                        + (timeSpan).Minutes.ToString()
+                        + " phút trước."
+                    )
+                 );
                 string a = post.nd;
                 //post.cmt = db.comment.Where(cmt => cmt.id_post == post.id_post);
                 post.cmt = from cmt in db.comment

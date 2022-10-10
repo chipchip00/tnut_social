@@ -28,5 +28,6 @@ namespace WebApplication1.Models
         public IQueryable<anh> img;
         public IQueryable<like>  like;
         public IQueryable<cmt> cmt;
+        public string timeSpan;
     }
 }

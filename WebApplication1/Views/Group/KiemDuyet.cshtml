@@ -3,36 +3,54 @@
 @{
     ViewBag.Title = "KiemDuyet";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+
 }
 <div class="container">
     <div class="main-post">
-        @foreach (var post in Model)
-        {
-            <div class="a-post" id="post-@post.id_post">
-                <div class="user-group">
-
-                    <b><a href="/profile?id=@post.id"><span class="img-avatar"><img src="~/asset/images/avatar/@post.avatar" /></span></a><span>@post.nguoi_dang >></span><span><a href="/group/chitiet?ma_nhom=@post.ma_nhom"> @post.ten_nhom</a></span></b>
+        @if (Model.Count() > 0) { 
+            foreach (var post in Model)
+            {
+                <div class="a-post" id="post-@post.id_post">
+                    <div class="user-group">
+                        <a href="/profile?id=@post.id">
+                            <span class="img-avatar">
+                                <img src="~/asset/images/avatar/@post.avatar" />
+                            </span>
+                        </a>
+                        <div>
+                            <span><b>@post.nguoi_dang</b></span>
+                            <p class="time-span-label">@post.timeSpan</p>
+                        </div>
+                    </div>
+                    <div class="text-post">
+                        @Html.Raw(@post.nd)
+                    </div>
+                    <div class="image-post gallery-@post.img.Count()">
+                        @foreach (var img in post.img)
+                        {
+                            <img src="~/asset/images/post/@post.id_post/@img.link" alt="@img.mo_ta" />
+                        }
+                        @*<img src="~/asset/images/post/img1.jpg" alt="Ảnh lớp học tiếng Nhật" />*@
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2"></div>
+                        <div class="col-md-4 duyet-post approve-post" id="approve-post-@post.id_post">Phê duyệt</div>
+                        <div class="col-md-4 duyet-post remove-post" id="remove-post-@post.id_post">Từ chối</div>
+                        <div class="col-md-2"></div>
+                    </div>
                 </div>
-                <div class="text-post">
-                    @post.nd
-                </div>
-                <div class="image-post gallery-@post.img.Count()">
-                    @foreach (var img in post.img)
-                    {
-                        <img src="~/asset/images/post/@img.link" alt="@img.mo_ta" />
-                    }
-                    @*<img src="~/asset/images/post/img1.jpg" alt="Ảnh lớp học tiếng Nhật" />*@
-                </div>
-                <div class="row">
-                    <div class="col-md-2"></div>
-                    <div class="col-md-4 duyet-post approve-post" id="approve-post-@post.id_post">Phê duyệt</div>
-                    <div class="col-md-4 duyet-post remove-post" id="remove-post-@post.id_post">Từ chối</div>
-                    <div class="col-md-2"></div>
-                </div>
-            </div>
+            }
         }
+            else
+            {
+            <br />
+                <span>Không có bài viết nào cần duyệt!</span>
+            }
+
     </div>
 </div>
 
 <script src="~/asset/js/main.js"></script>
+<script src="~/asset/js/group.js"></script>
 

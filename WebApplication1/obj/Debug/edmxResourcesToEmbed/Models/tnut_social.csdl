@@ -162,7 +162,7 @@
       <PropertyRef Name="uid" />
     </Key>
     <Property Name="uid" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
-    <Property Name="password" Type="String" MaxLength="50" />
+    <Property Name="password" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
     <Property Name="ho_ten" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="dia_chi" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
@@ -192,7 +192,9 @@
     <NavigationProperty Name="user" Relationship="Self.FK_user_group_user1" FromRole="user_group" ToRole="user" />
   </EntityType>
   <Association Name="FK_anh_post">
-    <End Role="post" Type="Self.post" Multiplicity="0..1" />
+    <End Role="post" Type="Self.post" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
     <End Role="anh" Type="Self.anh" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="post">
@@ -228,7 +230,9 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_comment_post">
-    <End Role="post" Type="Self.post" Multiplicity="1" />
+    <End Role="post" Type="Self.post" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
     <End Role="comment" Type="Self.comment" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="post">
@@ -288,7 +292,9 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_like_post">
-    <End Role="post" Type="Self.post" Multiplicity="1" />
+    <End Role="post" Type="Self.post" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
     <End Role="like" Type="Self.like" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="post">

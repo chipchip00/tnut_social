@@ -23,6 +23,16 @@
     <Property Name="id_category" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="name" Type="nvarchar" MaxLength="100" />
   </EntityType>
+  <EntityType Name="chat">
+    <Key>
+      <PropertyRef Name="id_chat" />
+    </Key>
+    <Property Name="id_chat" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="noi_dung" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="uid" Type="nvarchar" MaxLength="20" Nullable="false" />
+    <Property Name="nguoi_nhan" Type="nvarchar" MaxLength="20" Nullable="false" />
+    <Property Name="time" Type="datetime" Nullable="false" />
+  </EntityType>
   <EntityType Name="comment">
     <Key>
       <PropertyRef Name="id_comment" />
@@ -33,16 +43,6 @@
     <Property Name="time" Type="datetime" />
     <Property Name="noi_dung" Type="nvarchar" MaxLength="500" />
     <Property Name="id_parent" Type="int" />
-  </EntityType>
-  <EntityType Name="chat">
-    <Key>
-      <PropertyRef Name="id_chat" />
-    </Key>
-    <Property Name="id_chat" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="noi_dung" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="uid" Type="nvarchar" MaxLength="20" Nullable="false" />
-    <Property Name="nguoi_nhan" Type="nvarchar" MaxLength="20" Nullable="false" />
-    <Property Name="time" Type="datetime" Nullable="false" />
   </EntityType>
   <EntityType Name="group">
     <Key>
@@ -158,7 +158,9 @@
     <Property Name="id_role" Type="int" />
   </EntityType>
   <Association Name="FK_anh_post">
-    <End Role="post" Type="Self.post" Multiplicity="0..1" />
+    <End Role="post" Type="Self.post" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
     <End Role="anh" Type="Self.anh" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="post">
@@ -166,6 +168,18 @@
       </Principal>
       <Dependent Role="anh">
         <PropertyRef Name="id_post" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_chat_user1">
+    <End Role="user" Type="Self.user" Multiplicity="1" />
+    <End Role="chat" Type="Self.chat" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="user">
+        <PropertyRef Name="uid" />
+      </Principal>
+      <Dependent Role="chat">
+        <PropertyRef Name="uid" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -182,7 +196,9 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_comment_post">
-    <End Role="post" Type="Self.post" Multiplicity="1" />
+    <End Role="post" Type="Self.post" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
     <End Role="comment" Type="Self.comment" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="post">
@@ -205,20 +221,10 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_chat_user1">
-    <End Role="user" Type="Self.user" Multiplicity="1" />
-    <End Role="chat" Type="Self.chat" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="user">
-        <PropertyRef Name="uid" />
-      </Principal>
-      <Dependent Role="chat">
-        <PropertyRef Name="uid" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="FK_like_post">
-    <End Role="post" Type="Self.post" Multiplicity="1" />
+    <End Role="post" Type="Self.post" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
     <End Role="like" Type="Self.like" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="post">
@@ -367,8 +373,8 @@
     <EntitySet Name="account" EntityType="Self.account" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="anh" EntityType="Self.anh" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="category" EntityType="Self.category" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="comment" EntityType="Self.comment" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="chat" EntityType="Self.chat" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="comment" EntityType="Self.comment" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="group" EntityType="Self.group" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="khoa" EntityType="Self.khoa" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="like" EntityType="Self.like" Schema="dbo" store:Type="Tables" />
@@ -385,6 +391,10 @@
       <End Role="post" EntitySet="post" />
       <End Role="anh" EntitySet="anh" />
     </AssociationSet>
+    <AssociationSet Name="FK_chat_user1" Association="Self.FK_chat_user1">
+      <End Role="user" EntitySet="user" />
+      <End Role="chat" EntitySet="chat" />
+    </AssociationSet>
     <AssociationSet Name="FK_comment_comment" Association="Self.FK_comment_comment">
       <End Role="comment" EntitySet="comment" />
       <End Role="comment1" EntitySet="comment" />
@@ -396,10 +406,6 @@
     <AssociationSet Name="FK_comment_user" Association="Self.FK_comment_user">
       <End Role="user" EntitySet="user" />
       <End Role="comment" EntitySet="comment" />
-    </AssociationSet>
-    <AssociationSet Name="FK_chat_user1" Association="Self.FK_chat_user1">
-      <End Role="user" EntitySet="user" />
-      <End Role="chat" EntitySet="chat" />
     </AssociationSet>
     <AssociationSet Name="FK_like_post" Association="Self.FK_like_post">
       <End Role="post" EntitySet="post" />

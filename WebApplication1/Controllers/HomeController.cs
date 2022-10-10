@@ -5,6 +5,7 @@ using System.Dynamic;
 using System.IO;
 using System.Linq;
 using System.Web;
+using System.Web.Helpers;
 using System.Web.Mvc;
 using System.Web.Routing;
 using WebApplication1.Models;
@@ -70,9 +71,6 @@ namespace WebApplication1.Controllers
             var ds_post = from dt_post in db.post
                           join dt_user in db.user on dt_post.uid equals dt_user.uid
                           join dt_group in db.@group on dt_post.ma_nhom equals dt_group.ma_nhom
-                          //join dt_like in db.like on dt_post.id_post equals dt_like.id_post
-                          //join dt_comment in db.comment on dt_post.id_post equals dt_comment.id_post
-                          //join dt_image in db.anh on dt_post.id_post equals dt_image.id_post
                           where (data_nhom.Contains((int)dt_post.ma_nhom) && dt_post.status==true)
                           orderby dt_post.ngay_dang descending
                           select  new BaiViet{ 
@@ -83,10 +81,11 @@ namespace WebApplication1.Controllers
                               ten_nhom = dt_group.ten_nhom,
                               time = (DateTime)dt_post.ngay_dang,
                               avatar = dt_user.anh,
-                              ma_nhom = (int)dt_post.ma_nhom
+                              ma_nhom = (int)dt_post.ma_nhom,
                               //cmt = dt_comment,
                               //img = dt_image,
                               //like = dt_like
+                              
                           };
             ds_post = ds_post.Take(10);
             
@@ -96,8 +95,18 @@ namespace WebApplication1.Controllers
             
             foreach (var post in posts)
             {
+                var timeSpan = DateTime.Now - post.time;
+                post.timeSpan = (
+                    (timeSpan).Days > 0 ?
+                    (timeSpan).Days.ToString() + " ngày trước"
+                    :(
+                        (timeSpan).Hours.ToString()
+                        + " giờ "
+                        + (timeSpan).Minutes.ToString()
+                        + " phút trước."
+                    )
+                 );
                 string a = post.nd;
-                //post.cmt = db.comment.Where(cmt => cmt.id_post == post.id_post);
                 post.cmt = from cmt in db.comment
                             join user in db.user on cmt.uid equals user.uid
                             where cmt.id_post == post.id_post
@@ -116,8 +125,22 @@ namespace WebApplication1.Controllers
                 if (dt_user_like != null) post.user_like = true;
                 else post.user_like = false;
             }
-            
+            ViewBag.uid = username;
             return View(posts);
+        }
+        
+        public string DeletePost()
+        {
+            tnut_socialEntities db = new tnut_socialEntities();
+            if (Session["username"] == null) return "Chưa đăng nhập";
+            string username = Session["username"].ToString();
+            int id_post = Int32.Parse(Request.Form["id_post"].ToString());
+            var dt_post = db.post.Where(dt => dt.uid == username && dt.id_post == id_post).FirstOrDefault();
+            if (dt_post == null) return "Không có quyền xóa bài viết!";
+            db.post.Remove(dt_post);
+            int n = db.SaveChanges();
+            if (n > 0) return "1";
+            else return "Đã có lỗi xảy ra. Vui lòng thử lại";
         }
         public ActionResult logout()
         {
@@ -155,8 +178,10 @@ namespace WebApplication1.Controllers
             if (new_pass != new_pass_retype) return false;
             tnut_socialEntities db = new tnut_socialEntities();
             var uInfo = db.user.Where(user => user.uid == username).FirstOrDefault();
-            if (uInfo.password != old_pass) return false;
-            uInfo.password = new_pass;
+
+            bool isMatchPassword = Crypto.VerifyHashedPassword(uInfo.password, old_pass);
+            if (!isMatchPassword) return false;
+            uInfo.password =Crypto.HashPassword(new_pass) ;
             int n = db.SaveChanges();
             if (n > 0) return true;
             return false;
@@ -280,8 +305,7 @@ namespace WebApplication1.Controllers
                                  link = imgs.link
 
                              }).ToList();
-                //post.like = db.like.Where(like => like.id_post == post.id_post).ToArray();
-                //post.img = db.anh.Where(img => img.id_post == post.id_post).ToArray();
+
                 var dt_user_like = db.like.Where(dt => dt.id_post == post.id_post && dt.uid == username).FirstOrDefault();
                 if (dt_user_like != null) post.user_like = true;
                 else post.user_like = false;

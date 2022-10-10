@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Mail;
 using System.Text;
 using System.Web;
+using System.Web.Helpers;
 using System.Web.Mvc;
 using System.Web.Security;
 using WebApplication1.Models;
@@ -21,22 +22,30 @@ namespace WebApplication1.Controllers
         [HttpPost]
         public ActionResult Index(string username, string password )
         {
-            tnut_socialEntities db = new tnut_socialEntities();
-
-            var data = db.user.Where(user => user.uid == username && (user.password == password));
-            
-            int numberOfData = data.Count();
-            if (numberOfData > 0)
+            if(username =="" || password == "")
             {
-                string uid = data.Select(dt => dt.uid).FirstOrDefault().ToString();
-                string ten = data.Select(dt => dt.ho_ten).FirstOrDefault().ToString();
-                string returnUrl = Request.QueryString["returnUrl"];
-                Session["username"] = uid;
-                Session["name"] = ten;
-                return RedirectToLocal(returnUrl);
-                //return RedirectToAction("Index", "Home");
+                ViewBag.error_message = "Tên đăng nhập hoặc mật khẩu không được để trống!";
+                return View();
             }
-            else ViewBag.error_message = "Đăng nhập thất bại, vui lòng thử lại!";
+            tnut_socialEntities db = new tnut_socialEntities();
+            var userData = db.user.Where(user => user.uid == username);
+            if (userData.Count() > 0)
+            {
+                string hashedPassword = userData.FirstOrDefault().password;
+                bool isCorrect = Crypto.VerifyHashedPassword(hashedPassword, password);
+                if (isCorrect)
+                {
+                    string uid = userData.Select(dt => dt.uid).FirstOrDefault().ToString();
+                    string ten = userData.Select(dt => dt.ho_ten).FirstOrDefault().ToString();
+                    string returnUrl = Request.QueryString["returnUrl"];
+                    Session["username"] = uid;
+                    Session["name"] = ten;
+                    return RedirectToLocal(returnUrl);
+                    //return RedirectToAction("Index", "Home");
+                }
+
+            }
+            ViewBag.error_message = "Tên đăng nhập hoặc mật khẩu không đúng, vui lòng thử lại!";
             return View();
         }
         private ActionResult RedirectToLocal(string returnUrl)
@@ -70,14 +79,16 @@ namespace WebApplication1.Controllers
             MailAddress addr = new MailAddress(receiver);
             string username = addr.User;
             string domain = addr.Host;
-            if (domain != "tnut.edu.vn") RedirectToAction("forgot");
+            if (domain != "tnut.edu.vn")
+            {
+                TempData["Error"] = "Email không đúng định dạng, vui lòng thử lại!";
+                return RedirectToAction("forgot");
+            }
             tnut_socialEntities db = new tnut_socialEntities();
             var uInfo = db.user.Where(user => user.uid == username).FirstOrDefault();
+            var hashedPassword = Crypto.HashPassword(new_pass);
+            uInfo.password = hashedPassword;
 
-            uInfo.password = new_pass;
-            
-            
-            
             try
             {
                 if (ModelState.IsValid)
@@ -108,8 +119,8 @@ namespace WebApplication1.Controllers
                     }
                     return RedirectToAction("Index");
                 }
-                
-            }
+
+        }
             catch (Exception e)
             {
                 Console.WriteLine(e);

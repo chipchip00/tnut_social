@@ -1,39 +1,42 @@
 ﻿//const { json } = require("modernizr");
 
+const hostname = location.protocol + '//' + location.host;
 $(document).ready(function () {
-
     //window.scrollTo(0, 0);
 
     $(document).on('click', '.show_comment', function () {
         var id_post = $(this).attr("id").split("-")[2];
         $("#comment-section-" + id_post).css("display", "block");
     });
-    function duyetPost(action, id_post) {
-        $.post(
-            "DuyetPost",
-            {
-                action: action,
-                id_post: id_post
-            },
-
-            function (data) {
-                if (data == "1") {
-                    $("#post-" + id_post).remove();
-                }
-        });
-    }
-    $(".duyet-post").click(function () {
-        var id = $(this).attr("id").split("-");
-        var id_post = id[2];
-        var action = id[0];
-        duyetPost(action, id_post);
-    });
   
-       
+    $(document).on('click', '.delete-post', function () {
+        if (confirm('Bạn có chắc chắn muốn xóa')) {
+            var id = $(this).attr("id").split("-")[2];
+            // Save it!
+            $.post(`${hostname}/Home/DeletePost`,
+                {
+                    id_post:id
+                },
+                function (data) {
+                    if (data == "1") {
+                        Swal.fire("Thành công", "Đã xóa bài viết!", "success");
+                        $("#a-post-" + id).remove();
+                        return;
+                    }
+                    Swal.fire("Thất bại", "Xóa bài viết không thành công", "error");
+                    return;
+                }
+            )
+        } else {
+            // Do nothing!
+            
+        }
+    });
+
      $(document).on('click', '.send-comment',function () {
         var id_post = $(this).attr("id").split("-")[2];
         var nd_comment = $("#input-comment-" + id_post).val();
-        $.post("Home/AddComment",
+         $.post(`${hostname}/Home/AddComment`,
 
             {
                 id_post: id_post,
@@ -53,7 +56,7 @@ $(document).ready(function () {
                 $("#comment-count-" + id_post).html(commmentCount);
                 var str = "";
                 str += '<div class="a-comment">';
-                str += '<div class="img-avatar-comment "><img src="asset/images/avatar/' + avatar + '" /></div>';
+                str += `<div class="img-avatar-comment "><img src="${hostname}/asset/images/avatar/` + avatar + '" /></div>';
                 str += '<div class="nd-cmt"><b>'+ten+'</b><p class="noi-dung-comment">' + nd_comment + '</p></div>';
                 str += ' </div>';
                 $("#comment-section-" + id_post).prepend(str);
@@ -70,7 +73,7 @@ $(document).ready(function () {
     });
     $(document).on('click', '.like-button',function () {
         var id_post = $(this).attr("id").split("-")[2];
-        $.post("/home/updatelike",
+        $.post(`${hostname}/home/updatelike`,
             {
                 id_post: id_post
             },
@@ -111,7 +114,7 @@ $(document).ready(function () {
         $(".main").css("opacity", "0.3");
         $("#dialog").css("display", "block");
         $('#dialog').dialog({
-            
+            title: 'Đổi mật khẩu',
             width: 400,
             height: 300,
             close: function (event, ui) { $(".main").css("opacity", "1");; }
@@ -126,7 +129,7 @@ $(document).ready(function () {
             alert("Mật khẩu nhập lại không trùng khớp!");
             return;
         }
-        $.post("/home/changepass",
+        $.post(`${hostname}/home/changepass`,
             {
                 old_pass: old_pass,
                 new_pass: new_pass,
@@ -152,5 +155,7 @@ $(document).ready(function () {
             }
         )
     });
-    
+    $("#btnSearch").click(function () {
+
+    });
 });
