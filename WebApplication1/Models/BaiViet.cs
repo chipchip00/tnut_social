@@ -5,7 +5,19 @@ using System.Web;
 
 namespace WebApplication1.Models
 {
-    public class cmt
+    public class CustomLike
+    {
+        public string uid;
+        public int id_post;
+    }
+    public class CustomAnh
+    {
+        public int id_anh;
+        public string link;
+        public string alt;
+        public int id_post;
+    }
+    public class CustomCmt
     {
         public int id;
         public string uid;
@@ -25,9 +37,11 @@ namespace WebApplication1.Models
         public string avatar;
         public int ma_nhom;
         public bool user_like;
-        public IQueryable<anh> img;
-        public IQueryable<like>  like;
-        public IQueryable<cmt> cmt;
+        public List<CustomAnh> img;
+        public List<CustomLike> like;
+        public List<CustomCmt> cmt;
         public string timeSpan;
+
+
     }
 }

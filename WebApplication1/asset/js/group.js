@@ -26,7 +26,6 @@ $(document).ready(function () {
         const windowWidth = $(window).width();
         const scrollHeight = $(document).scrollTop();
         if (windowWidth >= 992 && scrollHeight > 400) {
-            console.log("sadf");
             $(".list-user-group").addClass("fixed-postion");
             return;
         }

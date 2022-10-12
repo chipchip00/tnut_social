@@ -8,7 +8,8 @@
 }
 <div class="container">
     <div class="main-post">
-        @if (Model.Count() > 0) { 
+        @if (Model.Count() > 0)
+        {
             foreach (var post in Model)
             {
                 <div class="a-post" id="post-@post.id_post">
@@ -29,7 +30,7 @@
                     <div class="image-post gallery-@post.img.Count()">
                         @foreach (var img in post.img)
                         {
-                            <img src="~/asset/images/post/@post.id_post/@img.link" alt="@img.mo_ta" />
+                            <img src="~/asset/images/post/@post.id_post/@img.link" alt="@img.alt" />
                         }
                         @*<img src="~/asset/images/post/img1.jpg" alt="Ảnh lớp học tiếng Nhật" />*@
                     </div>
@@ -41,12 +42,28 @@
                     </div>
                 </div>
             }
-        }
-            else
+        <div class="duyet-paging">
+            @if (Model.Count() == 10 && ViewBag.pageNumber != 0)
             {
-            <br />
-                <span>Không có bài viết nào cần duyệt!</span>
+            <a class="btn btn-info" href="/group/KiemDuyet?ma_nhom=@ViewBag.maNhom&pageNumber=@(ViewBag.PageNumber -1 )">Back</a>
+            <a class="btn btn-info" href="/group/KiemDuyet?ma_nhom=@ViewBag.maNhom&pageNumber=@(ViewBag.PageNumber +1 )">Next</a>
             }
+            else if (ViewBag.pageNumber != 0)
+            {
+            <a class="btn btn-info" href="/group/KiemDuyet?ma_nhom=@ViewBag.maNhom&pageNumber=@(ViewBag.PageNumber -1 )">Back</a>
+
+            }
+            else if (Model.Count() == 10)
+            {
+            <a class="btn btn-info" href="/group/KiemDuyet?ma_nhom=@ViewBag.maNhom&pageNumber=@(ViewBag.PageNumber +1 )">Next</a>
+            }
+        </div>
+        }
+        else
+        {
+            <br />
+            <span>Không còn bài viết nào!</span>
+        }
 
     </div>
 </div>

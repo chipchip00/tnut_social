@@ -158,6 +158,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Handler\HandlePost.cs" />
     <Compile Include="Models\account.cs">
       <DependentUpon>tnut_social.tt</DependentUpon>
     </Compile>
@@ -174,6 +175,7 @@
     <Compile Include="Models\comment.cs">
       <DependentUpon>tnut_social.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\CustomBaiViet.cs" />
     <Compile Include="Models\group.cs">
       <DependentUpon>tnut_social.tt</DependentUpon>
     </Compile>
@@ -641,9 +643,11 @@
     <Content Include="Views\Search\Index.cshtml" />
     <Content Include="Views\TaiLieu\Index.cshtml" />
     <Content Include="Views\TaiLieu\ChiTiet.cshtml" />
+    <Content Include="Views\Shared\_ListPost.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Controller\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

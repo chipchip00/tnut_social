@@ -35,7 +35,8 @@ $(document).ready(function () {
 
      $(document).on('click', '.send-comment',function () {
         var id_post = $(this).attr("id").split("-")[2];
-        var nd_comment = $("#input-comment-" + id_post).val();
+         var nd_comment = $("#input-comment-" + id_post).val();
+         console.log(id_post, nd_comment);
          $.post(`${hostname}/Home/AddComment`,
 
             {
@@ -68,11 +69,14 @@ $(document).ready(function () {
     $(".input-comment").keyup(function (event) {
         if (event.keyCode === 13) {
             var id_post = $(this).attr("id").split("-")[2];
+            console.log(id_post);
             $("#send-comment-" + id_post).click();
         }
     });
-    $(document).on('click', '.like-button',function () {
+    $(document).on('click', '.like-button', function () {
+        console.log("like...");
         var id_post = $(this).attr("id").split("-")[2];
+        console.log(id_post);
         $.post(`${hostname}/home/updatelike`,
             {
                 id_post: id_post
@@ -81,6 +85,7 @@ $(document).ready(function () {
                 var like_data = data.split("-");
 
                 if (like_data[0] == "like") {
+                    console.log("liked");
                     $("#like-post-" + id_post).addClass("bi-heart-fill");
                     $("#like-post-" + id_post).removeClass("bi-heart");
                     $("#like-count-" + id_post).html(like_data[1]);

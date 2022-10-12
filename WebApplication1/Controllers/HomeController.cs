@@ -9,124 +9,107 @@ using System.Web.Helpers;
 using System.Web.Mvc;
 using System.Web.Routing;
 using WebApplication1.Models;
+using WebApplication1.Handler;
 
 namespace WebApplication1.Controllers
 {
-    public class like1
+    public class HomeModel
     {
-        public string uid;
-        public int id_post;
-    }
-    public class anh1
-    {
-        public int id_anh;
-        public string link;
-        public int id_post;
-    }
-    public class cmt1
-    {
-        public int id;
-        public string uid;
-        public int id_post;
-        public string nd;
-        public string ten;
-        public string avatar;
-    }
-    public class BaiVietArr
-    {
-        public string id;
-        public int id_post;
-        public string nd;
-        public string nguoi_dang;
-        public string ten_nhom;
-        public DateTime time;
-        public string avatar;
-        public int ma_nhom;
-        public bool user_like;
-  
-        public List<anh1> img;
-
-        public List<like1> like;
- 
-        public List<cmt1> cmt;
+        public List<BaiViet> posts;
+        public user user;
     }
     public class HomeController : Controller
     {
         private tnut_socialEntities dtb = new tnut_socialEntities();
+
+        public string GetPosts()
+        {
+
+            string username = Session["username"].ToString();
+            string maNhom = Request.Form["maNhom"];
+            int page_number = Int32.Parse(Request.Form["page_number"]);
+
+            int? manhom;
+            if (maNhom == "")
+                manhom = null;
+            else manhom = Int32.Parse(maNhom);
+            HandlePost handelPost = new HandlePost(username, manhom, page_number);
+            List<BaiViet> posts = handelPost.getPosts();
+            Console.WriteLine(posts);
+            string json = JsonConvert.SerializeObject(posts);
+            return json;
+        }
+
         public ActionResult Index()
         {
             if (Session["username"] == null)
             {
                 return RedirectToAction("Index", "Login");
             }
-            tnut_socialEntities db = new tnut_socialEntities();
             string username = Session["username"].ToString();
+            tnut_socialEntities db = new tnut_socialEntities();
             var user_info = db.user.Where(user => user.uid == username).FirstOrDefault();
-            ViewBag.user = user_info;
-            var ds_nhom = from dt_nhom in db.user_group where dt_nhom.uid == username 
-                          select dt_nhom.ma_nhom;
-            //var dt = db.user_group.Where(group => group.uid == username).ToList();
-            var data_nhom = ds_nhom.ToList();
+            //ViewBag.user = user_info;
+            //var ds_nhom = from dt_nhom in db.user_group where dt_nhom.uid == username 
+            //              select dt_nhom.ma_nhom;
+            ////var dt = db.user_group.Where(group => group.uid == username).ToList();
+            //var data_nhom = ds_nhom.ToList();
 
-            var ds_post = from dt_post in db.post
-                          join dt_user in db.user on dt_post.uid equals dt_user.uid
-                          join dt_group in db.@group on dt_post.ma_nhom equals dt_group.ma_nhom
-                          where (data_nhom.Contains((int)dt_post.ma_nhom) && dt_post.status==true)
-                          orderby dt_post.ngay_dang descending
-                          select  new BaiViet{ 
-                              id = dt_post.uid,
-                              id_post = dt_post.id_post,
-                              nd = dt_post.noi_dung,
-                              nguoi_dang = dt_user.ho_ten,
-                              ten_nhom = dt_group.ten_nhom,
-                              time = (DateTime)dt_post.ngay_dang,
-                              avatar = dt_user.anh,
-                              ma_nhom = (int)dt_post.ma_nhom,
-                              //cmt = dt_comment,
-                              //img = dt_image,
-                              //like = dt_like
-                              
-                          };
-            ds_post = ds_post.Take(10);
-            
-            
-            var posts = ds_post.ToList();
-            Session["last_idpost"] = posts.LastOrDefault().id_post;
-            
-            foreach (var post in posts)
-            {
-                var timeSpan = DateTime.Now - post.time;
-                post.timeSpan = (
-                    (timeSpan).Days > 0 ?
-                    (timeSpan).Days.ToString() + " ngày trước"
-                    :(
-                        (timeSpan).Hours.ToString()
-                        + " giờ "
-                        + (timeSpan).Minutes.ToString()
-                        + " phút trước."
-                    )
-                 );
-                string a = post.nd;
-                post.cmt = from cmt in db.comment
-                            join user in db.user on cmt.uid equals user.uid
-                            where cmt.id_post == post.id_post
-                            select new cmt
-                            {
-                                id = cmt.id_comment,
-                                uid = cmt.uid,
-                                id_post = cmt.id_post,
-                                nd = cmt.noi_dung,
-                                ten = user.ho_ten,
-                                avatar = user.anh
-                            };
-                post.like = db.like.Where(like => like.id_post == post.id_post);
-                post.img = db.anh.Where(img => img.id_post == post.id_post);
-                var dt_user_like = db.like.Where(dt => dt.id_post == post.id_post && dt.uid == username).FirstOrDefault();
-                if (dt_user_like != null) post.user_like = true;
-                else post.user_like = false;
-            }
-            ViewBag.uid = username;
-            return View(posts);
+            //var ds_post = from dt_post in db.post
+            //              join dt_user in db.user on dt_post.uid equals dt_user.uid
+            //              join dt_group in db.@group on dt_post.ma_nhom equals dt_group.ma_nhom
+            //              where (data_nhom.Contains((int)dt_post.ma_nhom) && dt_post.status==true)
+            //              orderby dt_post.ngay_dang descending
+            //              select  new BaiViet{ 
+            //                  id = dt_post.uid,
+            //                  id_post = dt_post.id_post,
+            //                  nd = dt_post.noi_dung,
+            //                  nguoi_dang = dt_user.ho_ten,
+            //                  ten_nhom = dt_group.ten_nhom,
+            //                  time = (DateTime)dt_post.ngay_dang,
+            //                  avatar = dt_user.anh,
+            //                  ma_nhom = (int)dt_post.ma_nhom,
+            //              };
+            //ds_post = ds_post.Take(10);
+
+
+            //var posts = ds_post.ToList();
+            //Session["last_idpost"] = posts.LastOrDefault().id_post;
+
+            //foreach (var post in posts)
+            //{
+            //    var timeSpan = DateTime.Now - post.time;
+            //    post.timeSpan = (
+            //        (timeSpan).Days > 0 ?
+            //        (timeSpan).Days.ToString() + " ngày trước"
+            //        :(
+            //            (timeSpan).Hours.ToString()
+            //            + " giờ "
+            //            + (timeSpan).Minutes.ToString()
+            //            + " phút trước."
+            //        )
+            //     );
+            //    string a = post.nd;
+            //    post.cmt = from cmt in db.comment
+            //                join user in db.user on cmt.uid equals user.uid
+            //                where cmt.id_post == post.id_post
+            //                select new cmt
+            //                {
+            //                    id = cmt.id_comment,
+            //                    uid = cmt.uid,
+            //                    id_post = cmt.id_post,
+            //                    nd = cmt.noi_dung,
+            //                    ten = user.ho_ten,
+            //                    avatar = user.anh
+            //                };
+            //    post.like = db.like.Where(like => like.id_post == post.id_post);
+            //    post.img = db.anh.Where(img => img.id_post == post.id_post);
+            //    var dt_user_like = db.like.Where(dt => dt.id_post == post.id_post && dt.uid == username).FirstOrDefault();
+            //    if (dt_user_like != null) post.user_like = true;
+            //    else post.user_like = false;
+            //}
+            //ViewBag.uid = username;
+            return View(user_info);
         }
         
         public string DeletePost()
@@ -244,12 +227,12 @@ namespace WebApplication1.Controllers
             var ds_post = from dt_post in db.post
                           join dt_user in db.user on dt_post.uid equals dt_user.uid
                           join dt_group in db.@group on dt_post.ma_nhom equals dt_group.ma_nhom
-                          //join dt_like in db.like on dt_post.id_post equals dt_like.id_post
-                          //join dt_comment in db.comment on dt_post.id_post equals dt_comment.id_post
-                          //join dt_image in db.anh on dt_post.id_post equals dt_image.id_post
-                          where (data_nhom.Contains((int)dt_post.ma_nhom) && dt_post.status == true &&dt_post.id_post<last_idpost)
+                          where (data_nhom.Contains((int)dt_post.ma_nhom) 
+                                  && dt_post.status == true 
+                                  && dt_post.id_post < last_idpost
+                          )
                           orderby dt_post.ngay_dang descending
-                          select new BaiVietArr
+                          select new BaiViet
                           {
                               id = dt_post.uid,
                               id_post = dt_post.id_post,
@@ -259,18 +242,12 @@ namespace WebApplication1.Controllers
                               time = (DateTime)dt_post.ngay_dang,
                               avatar = dt_user.anh,
                               ma_nhom = (int)dt_post.ma_nhom
-                              //cmt = dt_comment,
-                              //img = dt_image,
-                              //like = dt_like
                           };
             if (ds_post == null) return "";
             ds_post = ds_post.Take(10);
-            //Session["last_idpost"] = ds_post.ElementAt(9).id_post;
             var posts = ds_post.ToList();
             if (posts.LastOrDefault() == null) return "";
             Session["last_idpost"] = posts.LastOrDefault().id_post;
-
-            
             foreach (var post in posts)
             {
 
@@ -279,7 +256,7 @@ namespace WebApplication1.Controllers
                 var x = (from cmt in db.comment
                            join user in db.user on cmt.uid equals user.uid
                            where cmt.id_post == post.id_post
-                           select new cmt1
+                           select new CustomCmt
                            {
                                id = cmt.id_comment,
                                uid = cmt.uid,
@@ -291,14 +268,14 @@ namespace WebApplication1.Controllers
                 post.cmt = x;
                 post.like = (from like in db.like
                              where like.id_post == post.id_post
-                             select new like1
+                             select new CustomLike
                              {
                                  uid = like.uid,
                                  id_post = like.id_post
                              }).ToList();
                 post.img = (from imgs in db.anh
                              where imgs.id_post == post.id_post
-                             select new anh1
+                             select new CustomAnh
                              {
                                  id_anh = imgs.id_image,
                                  id_post = (int)imgs.id_post,

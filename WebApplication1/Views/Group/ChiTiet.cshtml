@@ -1,5 +1,5 @@
 ﻿
-@model IEnumerable<WebApplication1.Models.BaiViet>
+@model IEnumerable<WebApplication1.Models.user>
 @{
     ViewBag.Title = "ChiTiet";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -52,66 +52,12 @@
 
             </div>
             <div class="main-post">
-                @foreach (var post in Model)
-                {
-                    string class_heart = " bi-heart";
-                    if (post.user_like == true) { class_heart = "bi-heart-fill"; }
-                    <div class="a-post" id="a-post-@post.id_post">
-                        <div class="user-group">
-                            <a href="/profile?id=@post.id">
-                                <span class="img-avatar">
-                                    <img src="~/asset/images/avatar/@post.avatar" />
-                                </span>
-                            </a>
-                            <div>
-                                <span><b>@post.nguoi_dang</b></span>
-                                <p class="time-span-label">@post.timeSpan</p>
-                            </div>
-
-                            @if (@Session["username"].ToString() == post.id)
-                            {
-                                <i title="Xóa bài viết" class="bi bi-trash delete-post" id="delete-post-@post.id_post"></i>
-                            }
-                        </div>
-                        <div class="text-post">
-                            @Html.Raw(post.nd)
-                        </div>
-                        <div class="image-post gallery-@post.img.Count()">
-                            @foreach (var img in post.img)
-                            {
-                                <img src="~/asset/images/post/@post.id_post/@img.link" alt="@img.mo_ta" />
-
-                            }
-                            @*<img src="~/asset/images/post/img1.jpg" alt="Ảnh lớp học tiếng Nhật" />*@
-                        </div>
-                        <div class="action-post">
-                            <i class="bi @class_heart fa-2x like-button" id="like-post-@post.id_post"></i>
-                            <input type="text" class="input-comment" id="input-comment-@post.id_post" placeholder="Thêm bình luận mới">
-                            <button id="send-comment-@post.id_post" class="btn btn-info send-comment"><i class="bi bi-send-check-fill"></i></button>
-                            <i class="bi fa-2x bi-hand-thumbs-up"></i>
-                            <span class="badge rounded-pill badge-notification bg-danger" id="like-count-@post.id_post">@post.like.Count()</span>
-                            <i class="bi bi-chat-left-text fa-2x show_comment" id="show-comment-@post.id_post"></i>
-                            <span class="badge rounded-pill badge-notification bg-danger" id="comment-count-@post.id_post">@post.cmt.Count()</span>
-
-                        </div>
-                        <div class="comment-section" id="comment-section-@post.id_post">
-                            @foreach (var comment in post.cmt)
-                            {
-                                <div class="a-comment">
-                                    <div class="img-avatar-comment "><a href="/profile?id=@comment.uid"><img src="~/asset/images/avatar/@comment.avatar" /></a></div>
-                                    <div class=" nd-cmt"><b>@comment.ten</b><p class="noi-dung-comment">@comment.nd</p></div>
-
-                                </div>
-                            }
-                        </div>
-
-                    </div>
-                }
+ 
             </div>
         </div>
         <div class="list-user-group col-lg-4">
             <h3>Danh sách thành viên</h3>
-            @foreach (var user in ViewBag.list_user)
+            @foreach (var user in Model)
             {
                 <div class="user-in-group" style="display:block">
                     <a href="/profile?id=@user.uid"><span class="img-avatar"><img src="~/asset/images/avatar/@user.anh" /></span></a><span> @user.ho_ten</span>

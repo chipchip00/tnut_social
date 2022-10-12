@@ -349,3 +349,8 @@
     width: 100%;
     text-align:center;
 }
+.duyet-paging {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}   
